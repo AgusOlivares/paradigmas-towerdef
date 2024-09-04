@@ -1,8 +1,9 @@
 package org.example.Enemigos;
 
-package org.example.Enemigos;
+
 
 public abstract class Enemy {
+
     protected int health;
     public boolean state;
     public int gold;
@@ -60,23 +61,4 @@ public abstract class Enemy {
 
     }
 }
-public class EnemyElf extends Enemy{
-    public EnemyElf() {
-        super(50,10,5,3,1,3);
-    }
-}
-public class EnemyHuman extends Enemy{
-    public EnemyHuman() {
-        super(30,5,0,3,1,1);
-    }
-}
-public class EnemyDwarf  extends Enemy{
-    public EnemyDwarf() {
-        super(70,20,10,7,1,1);
-    }
-    public class EnemyHobbit extends Enemy{
-        public EnemyHobbit() {
-            super(60,15,20,3,2,2);
-        }
-    }
 
