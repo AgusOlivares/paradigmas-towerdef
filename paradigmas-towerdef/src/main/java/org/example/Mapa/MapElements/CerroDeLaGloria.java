@@ -2,9 +2,9 @@ package org.example.Mapa.MapElements;
 
 public class CerroDeLaGloria extends MapElement {
 
-    public int Healt;
+    public int Health;
 
-    public CerroDeLaGloria(int healt) {
-        this.Healt = healt;
+    public CerroDeLaGloria(int health) {
+        this.Health = health;
     }
 }

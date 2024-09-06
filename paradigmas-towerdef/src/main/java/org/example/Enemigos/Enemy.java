@@ -1,64 +1,78 @@
 package org.example.Enemigos;
 
 
+import org.example.Mapa.MapElements.MapElement;
 
-public abstract class Enemy {
+public abstract class Enemy extends MapElement {
 
-    protected int health;
     public boolean state;
     public int gold;
     public int magic;
     public int damage;
-    public int walkrate;
+    public int walkRate;
     public int range;
-    //constructores
-    public Enemy(int health, int gold,int magic, int damage, int walkrate, int range) {
+    protected int health;
+
+    public Enemy(int health, int gold, int magic, int damage, int walkrate, int range) {
         this.health = health;
         this.gold = gold;
         this.magic = magic;
         this.damage = damage;
-        this.walkrate = walkrate;
+        this.walkRate = walkrate;
         this.range = range;
-        state=false;
+        state = false;
     }
-    //metodos
-    public int getHealth(){
+
+    public int getHealth() {
         return health;
     }
-    public int getGold(){
+
+    public int getGold() {
         return gold;
     }
-    public int getMagic(){
+
+    public int getMagic() {
         return magic;
     }
-    public int getDamage(){
+
+    public int getDamage() {
         return damage;
     }
-    public int getWalkrate(){
-        return walkrate;
+
+    public int getWalkRate() {
+        return walkRate;
     }
-    public int getRange(){
+
+    public int getRange() {
         return range;
     }
-    public void setDebuff(boolean debuff){
-        //realentizar enemigo
-        if (debuff && (!state)){
-            state=true;
+
+    public void setDebuff(boolean debuff) {
+        if (debuff && (!state)) {
+            state = true;
         }
     }
-    public boolean isAlive(){
-        //verifica si el enemigo está vivo
-        if(health>0){return true;}
-        else{return false;}
+
+    public boolean isAlive() {
+        return health > 0;
     }
 
-    public void walk(){
-        int spaces=walkrate;
+    public void walk() {
+        int spaces = walkRate;
         int i;
-        for (i=0;i==spaces;i++){
-            //seguir cuando este el mapa
+        for (i = 0; i == spaces; i++) {
+            //todo
         }
 
     }
+
+    public int getRow() {
+        return this.cell != null ? this.cell.row : -1;
+    }
+
+    public int getCol() {
+        return this.cell != null ? this.cell.col : -1;
+    }
+
 }
 

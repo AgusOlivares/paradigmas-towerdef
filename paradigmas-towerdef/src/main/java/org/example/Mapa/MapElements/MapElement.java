@@ -1,9 +1,15 @@
 package org.example.Mapa.MapElements;
 
-//Esta clase es experimental
+import org.example.Mapa.Cell;
 
 public abstract class MapElement {
+    protected Cell cell;
 
+    public Cell getCell() {
+        return cell;
+    }
 
-
+    public void setCell(Cell cell) {
+        this.cell = cell;
+    }
 }

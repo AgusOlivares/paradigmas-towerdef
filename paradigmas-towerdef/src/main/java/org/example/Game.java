@@ -1,8 +1,8 @@
 package org.example;
 
+import org.example.Enemigos.Enemy;
 import org.example.Mapa.Map;
 import org.example.Mapa.MapElements.pathCell;
-import org.example.Enemigos.Enemy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,7 @@ public class Game {
 
     public Game() {
         Map mapaGame = new Map();
-        mapaGame.Map(10,10);
+        mapaGame.Map(10, 10);
         this.mapa = mapaGame;
         this.enemies = new ArrayList<>();
         this.timer = new Timer();

@@ -1,8 +1,9 @@
 package org.example.Mapa.MapElements;
 
+import org.example.Enemigos.Enemy;
+
 import java.util.ArrayList;
 import java.util.List;
-import org.example.Enemigos.Enemy;
 
 public class pathCell extends MapElement {
 

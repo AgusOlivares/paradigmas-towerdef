@@ -7,6 +7,7 @@ public class Map {
 
     /**
      * Inicializo el mapa como una matriz conformada por instancias de la cLase Cell
+     *
      * @author Olivares Agustin
      * @version 1.0
      * @since 19/08/2024
@@ -21,7 +22,7 @@ public class Map {
         this.map = new Cell[rows][cols];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                map[i][j] = new Cell( i, j, null);
+                map[i][j] = new Cell(i, j, null);
             }
         }
 
@@ -54,7 +55,7 @@ public class Map {
             for (int j = 0; j < map[i].length; j++) {
                 // Imprimir 'C' si el contenido es una instancia de pathCell, de lo contrario '*'
                 if (map[i][j].getContent() instanceof pathCell) {
-                    if (((pathCell) map[i][j].getContent()).isStart()){
+                    if (((pathCell) map[i][j].getContent()).isStart()) {
                         System.out.print(" S |");
                     } else {
                         System.out.print("   |");
