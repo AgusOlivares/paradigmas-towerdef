@@ -42,7 +42,7 @@ public class Game {
             @Override
             public void run() {
                 for (Enemy enemy : enemies) {
-                    enemy.walk(); // Mover cada enemigo al siguiente pathCell
+                    enemy.walk(enemy); // Mover cada enemigo al siguiente pathCell
                 }
             }
         }, 1000, 1000); // Ejecuta cada 1 segundo
