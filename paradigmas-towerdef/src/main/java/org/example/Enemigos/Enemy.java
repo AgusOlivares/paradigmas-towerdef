@@ -2,15 +2,21 @@ package org.example.Enemigos;
 
 import org.example.Mapa.MapElements.MapElement;
 
-public abstract class Enemy extends MapElement {
 
-    public boolean;
-    public int gold;
-    public int magic;
-    public int damage;
-    public int walkRate;
-    public int range;
+import org.example.Mapa.MapElements.CerroDeLaGloria;
+import org.example.Mapa.MapElements.MapElement;
+import org.example.Mapa.MapElements.pathCell;
+
+public abstract class Enemy {
+
     protected int health;
+    protected boolean debuffState;
+    protected int gold;
+    protected int magic;
+    protected int damage;
+    protected int walkrate;
+    protected int range;
+    protected pathCell cell;
 
     public Enemy(int health, int gold, int magic, int damage, int walkrate, int range) {
         this.health = health;
@@ -19,7 +25,7 @@ public abstract class Enemy extends MapElement {
         this.damage = damage;
         this.walkRate = walkrate;
         this.range = range;
-        state = false;
+        this.debuffState = false;
     }
 
     public int getHealth() {
@@ -38,31 +44,51 @@ public abstract class Enemy extends MapElement {
         return damage;
     }
 
-    public int getWalkRate() {
-        return walkRate;
+
+    public float getWalkrate() {
+        return walkrate;
     }
 
     public int getRange() {
         return range;
     }
 
-    public void setDebuff(boolean debuff) {
-        if (debuff && (!state)) {
-            state = true;
+
+    public pathCell getCell() {
+        return cell;
+    }
+
+    public void setDebuff(boolean state) {
+        this.debuffState = state;
+        if (state) {
+            if (this.walkrate > 1) {
+                this.walkrate = (int) this.walkrate / 2;
+            }
+        } else {
+            this.walkrate = (int) this.walkrate * 2;
         }
     }
 
     public boolean isAlive() {
-        return health > 0;
+
+        return this.health > 0;
     }
 
-    public void walk() {
-        int spaces = walkRate;
+    public void walk(Enemy enemy) {
         int i;
-        for (i = 0; i == spaces; i++) {
-            //todo
+        for (i = 0; i == this.walkrate; i++) {
+            if (enemy.cell.next != null) {
+                enemy.cell.enemies.remove(enemy);
+                enemy.cell = enemy.cell.next;
+                enemy.cell.addEnemy(enemy);
         }
+        enemy.setDebuff(false);
+    }
 
+    public void attackCerro(Enemy enemy, CerroDeLaGloria cerro) {
+        if (enemy.cell.next instanceof MapElement.CerroDeLaGloria) {
+            cerro.health = cerro.health - enemy.damage;
+        }
     }
 
     public int getRow() {
