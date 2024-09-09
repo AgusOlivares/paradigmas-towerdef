@@ -1,7 +1,7 @@
 package org.example.Enemigos;
 
-public class EnemyHobbit extends Enemy{
+public class EnemyHobbit extends Enemy {
     public EnemyHobbit() {
-        super(60,15,20,3,2,2);
+        super(60, 15, 20, 3, 2, 2);
     }
 }

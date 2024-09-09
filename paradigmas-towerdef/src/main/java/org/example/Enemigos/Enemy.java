@@ -1,5 +1,7 @@
 package org.example.Enemigos;
 
+import org.example.Mapa.MapElements.MapElement;
+
 
 import org.example.Mapa.MapElements.CerroDeLaGloria;
 import org.example.Mapa.MapElements.MapElement;
@@ -21,7 +23,7 @@ public abstract class Enemy {
         this.gold = gold;
         this.magic = magic;
         this.damage = damage;
-        this.walkrate = walkrate;
+        this.walkRate = walkrate;
         this.range = range;
         this.debuffState = false;
     }
@@ -42,6 +44,7 @@ public abstract class Enemy {
         return damage;
     }
 
+
     public float getWalkrate() {
         return walkrate;
     }
@@ -49,6 +52,7 @@ public abstract class Enemy {
     public int getRange() {
         return range;
     }
+
 
     public pathCell getCell() {
         return cell;
@@ -66,6 +70,7 @@ public abstract class Enemy {
     }
 
     public boolean isAlive() {
+
         return this.health > 0;
     }
 
@@ -76,7 +81,6 @@ public abstract class Enemy {
                 enemy.cell.enemies.remove(enemy);
                 enemy.cell = enemy.cell.next;
                 enemy.cell.addEnemy(enemy);
-            }
         }
         enemy.setDebuff(false);
     }
@@ -86,5 +90,14 @@ public abstract class Enemy {
             cerro.health = cerro.health - enemy.damage;
         }
     }
+
+    public int getRow() {
+        return this.cell != null ? this.cell.row : -1;
+    }
+
+    public int getCol() {
+        return this.cell != null ? this.cell.col : -1;
+    }
+
 }
 

@@ -5,26 +5,27 @@ import org.example.Mapa.MapElements.pathCell;
 
 public class Map {
 
+    public static final int rows = 10;
+    public static final int cols = 10;
     /**
      * Inicializo el mapa como una matriz conformada por instancias de la cLase Cell
+     *
      * @author Olivares Agustin
      * @version 1.0
      * @since 19/08/2024
      */
 
     private Cell[][] map;
-    private Cell Salida;
-    private Cell Llegada;
+    private Cell endCell;
+    private Cell startCell;
 
-
-    public void Map(int rows, int cols) {
+    public void Map() {
         this.map = new Cell[rows][cols];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                map[i][j] = new Cell( i, j, null);
+                map[i][j] = new Cell(i, j, null);
             }
         }
-
         pathCell InicioCamino = new pathCell(true);
         // Este tiene que ser el cerro de la gloria
         //pathCell FinalCamino = new pathCell();
@@ -54,7 +55,7 @@ public class Map {
             for (int j = 0; j < map[i].length; j++) {
                 // Imprimir 'C' si el contenido es una instancia de pathCell, de lo contrario '*'
                 if (map[i][j].getContent() instanceof pathCell) {
-                    if (((pathCell) map[i][j].getContent()).isStart()){
+                    if (((pathCell) map[i][j].getContent()).isStart()) {
                         System.out.print(" S |");
                     } else {
                         System.out.print("   |");
@@ -70,12 +71,12 @@ public class Map {
     }
 
 
-    // este metodo va en la clase Level que aun no se implementara crea un camino horizontal a partir de la Salida
+    // este metodo va en la clase Level que aun no se implementara crea un camino horizontal a partir de la endCell
     public void crearCamino() {
         int startRow = 4; // Suponiendo que la salida está en la primera fila
         int startCol = -1; // Suponiendo que la salida está en la primera columna
 
-        Cell currentCell = this.Salida;
+        Cell currentCell = this.endCell;
 
         for (int j = startCol + 1; j < map[startRow].length; j++) {
 
@@ -90,8 +91,10 @@ public class Map {
                 currentCell = map[startRow][j].setContent(newPathCell);
             }
         }
+    }
 
-
+    public Cell getCell(int row, int col) {
+        return map[row][col];
     }
 
     public Cell[][] getMap() {
@@ -102,7 +105,7 @@ public class Map {
         this.map = map;
     }
 
-    public Cell getSalida() {
-        return Salida;
+    public Cell getEndCell() {
+        return endCell;
     }
 }
