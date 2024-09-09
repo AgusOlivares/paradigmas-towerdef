@@ -1,11 +1,10 @@
 package org.example.Enemigos;
 
-
 import org.example.Mapa.MapElements.MapElement;
 
 public abstract class Enemy extends MapElement {
 
-    public boolean state;
+    public boolean;
     public int gold;
     public int magic;
     public int damage;

@@ -17,7 +17,7 @@ public class Game {
 
     public Game() {
         Map mapaGame = new Map();
-        mapaGame.Map(10, 10);
+        mapaGame.Map();
         this.mapa = mapaGame;
         this.enemies = new ArrayList<>();
         this.timer = new Timer();
@@ -51,7 +51,7 @@ public class Game {
     // Método para agregar enemigos al juego
     public void addEnemy(Enemy enemy) {
         enemies.add(enemy);
-        pathCell startCell = (pathCell) mapa.getSalida().getContent();
+        pathCell startCell = (pathCell) mapa.getEndCell().getContent();
         startCell.addEnemy(enemy);
     }
 }

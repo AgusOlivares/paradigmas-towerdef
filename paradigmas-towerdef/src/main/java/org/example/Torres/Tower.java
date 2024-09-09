@@ -46,18 +46,17 @@ public class Tower extends MapElement {
     public ArrayList<pathCell> findAtkCells() {
         ArrayList<pathCell> atkCells = new ArrayList<>();
 
-        for (int k = this.range; k >= 0; k--) {
-            int minRow = this.getRow() - k;
-            int maxRow = this.getRow() + k;
-            int minCol = this.getCol() - k;
-            int maxCol = this.getCol() + k;
+        int minRow = this.getRow() - this.range;
+        int maxRow = this.getRow() + this.range;
+        int minCol = this.getCol() - this.range;
+        int maxCol = this.getCol() + this.range;
 
-            for (int i = minRow; i <= maxRow; i++) {
-                for (int j = minCol; j <= maxCol; j++) {
-                    if (i >= 0 && i < this.map.length && j >= 0 && j < this.map[0].length) {
-                        if (this.map[i][j].getContent() instanceof pathCell) {
-                            atkCells.add((pathCell) this.map[i][j].getContent());
-                        }
+
+        for (int i = minRow; i <= maxRow; i++) {
+            for (int j = minCol; j <= maxCol; j++) {
+                if (i >= 0 && i < this.map.length && j >= 0 && j < this.map[0].length) {
+                    if (this.map[i][j].getContent() instanceof pathCell) {
+                        atkCells.add((pathCell) this.map[i][j].getContent());
                     }
                 }
             }
