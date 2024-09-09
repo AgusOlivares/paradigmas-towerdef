@@ -9,7 +9,7 @@ public class EnemyElf extends Enemy{
     @Override
     public void attackCerro(Enemy elf, CerroDeLaGloria cerro) {
         if (elf.cell.next.next==null || elf.cell.next==null ){
-            cerro.Healt=cerro.Healt-elf.damage;
+            cerro.health =cerro.health -elf.damage;
         }
     }
 

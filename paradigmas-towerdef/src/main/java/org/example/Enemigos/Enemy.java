@@ -1,99 +1,89 @@
 package org.example.Enemigos;
 
 
-import org.example.Mapa.MapElements.pathCell;
-import org.example.Mapa.Cell;
 import org.example.Mapa.MapElements.CerroDeLaGloria;
+import org.example.Mapa.MapElements.MapElement;
+import org.example.Mapa.MapElements.pathCell;
 
 public abstract class Enemy {
 
     protected int health;
-    public boolean state;
-    public int gold;
-    public int magic;
-    public int damage;
-    public float walkrate;
-    public int range;
-    public pathCell cell;
-    //constructores
-    public Enemy(int health, int gold,int magic, int damage, float walkrate, int range) {
+    protected boolean debuffState;
+    protected int gold;
+    protected int magic;
+    protected int damage;
+    protected int walkrate;
+    protected int range;
+    protected pathCell cell;
+
+    public Enemy(int health, int gold, int magic, int damage, int walkrate, int range) {
         this.health = health;
         this.gold = gold;
         this.magic = magic;
         this.damage = damage;
         this.walkrate = walkrate;
         this.range = range;
-        state=false;
+        this.debuffState = false;
     }
-    //metodos
-    public int getHealth(){
+
+    public int getHealth() {
         return health;
     }
-    public int getGold(){
+
+    public int getGold() {
         return gold;
     }
-    public int getMagic(){
+
+    public int getMagic() {
         return magic;
     }
-    public int getDamage(){
+
+    public int getDamage() {
         return damage;
     }
-    public float getWalkrate(){
+
+    public float getWalkrate() {
         return walkrate;
     }
-    public int getRange(){
+
+    public int getRange() {
         return range;
     }
 
     public pathCell getCell() {
         return cell;
     }
-    public void setDebuff(boolean debuff){
-        //realentizar enemigo
-        if (debuff && (!state)){
-            state=true;
+
+    public void setDebuff(boolean state) {
+        this.debuffState = state;
+        if (state) {
+            if (this.walkrate > 1) {
+                this.walkrate = (int) this.walkrate / 2;
+            }
+        } else {
+            this.walkrate = (int) this.walkrate * 2;
         }
-    }
-    public boolean isAlive(){
-        //verifica si el enemigo está vivo
-        if(health>0){return true;}
-        else{return false;}
     }
 
-    public void walk(Enemy enemy){
-        float spaces= enemy.walkrate;
-        /*
-        if (state){
-            spaces=spaces/2;
-            if (spaces<1){
-                enemy.removeDebuff();
-                return;
-            }
-        }
-        */
+    public boolean isAlive() {
+        return this.health > 0;
+    }
+
+    public void walk(Enemy enemy) {
         int i;
-        for (i=0;i==spaces;i++){
-            enemy.cell.enemies.remove(enemy);
-            if (enemy.cell.next!=null ){
-                enemy.cell=enemy.cell.next;
+        for (i = 0; i == this.walkrate; i++) {
+            if (enemy.cell.next != null) {
+                enemy.cell.enemies.remove(enemy);
+                enemy.cell = enemy.cell.next;
                 enemy.cell.addEnemy(enemy);
             }
         }
-        /*
-        if (enemy.state){
-            enemy.removeDebuff();
-        }
-        */
+        enemy.setDebuff(false);
+    }
 
-    }
-    public void removeDebuff(){
-        if (state){
-            state=false;
-        }
-    }
-    public void attackCerro(Enemy enemy,CerroDeLaGloria cerro){
-        if (enemy.cell.next==null){
-            cerro.Healt= cerro.Healt-enemy.damage;
+    public void attackCerro(Enemy enemy, CerroDeLaGloria cerro) {
+        if (enemy.cell.next instanceof MapElement.CerroDeLaGloria) {
+            cerro.health = cerro.health - enemy.damage;
         }
     }
 }
