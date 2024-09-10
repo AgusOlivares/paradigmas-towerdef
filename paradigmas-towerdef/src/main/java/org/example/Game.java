@@ -2,7 +2,6 @@ package org.example;
 
 import org.example.Enemigos.Enemy;
 import org.example.Map.Map;
-import org.example.Map.MapElements.Path;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,47 +10,54 @@ import java.util.TimerTask;
 
 public class Game {
 
-    private Map mapa;
-    private List<Enemy> enemies; // Lista de enemigos en el juego
+    private Map map;
+    private List<Enemy> enemies;
     private Timer timer;
 
+    // Constructor de la clase Game
     public Game() {
         Map mapaGame = new Map();
         mapaGame.Map();
-        this.mapa = mapaGame;
+        this.map = mapaGame;
         this.enemies = new ArrayList<>();
         this.timer = new Timer();
     }
 
-    // Función para iniciar el juego
     public void playGame() {
+        // Se imprime el map cada 0.5 segundos
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                mapa.printMap();
+                map.printMap();
             }
-        }, 0, 500); // Imprime el mapa cada 0.5 segundos
+        }, 0, 500);
 
-        // Iniciar el avance de los enemigos
+        // Inicia el avance de los enemigos
         Time();
     }
 
-    // Función para avanzar a los enemigos cada segundo
+    // Función para hacer avanzar a los enemigos cada 1.0 segundo
     private void Time() {
+
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
+
+                // AGREGAR ACÁ PROCEDIMIENTOS DINÁMICOS
+
                 for (Enemy enemy : enemies) {
-                    enemy.walk(enemy); // Mover cada enemigo al siguiente path
+                    enemy.walk(enemy);
                 }
+
+
             }
-        }, 1000, 1000); // Ejecuta cada 1 segundo
+        }, 1000, 1000);
     }
 
-    // Método para agregar enemigos al juego
+
+    // Función para agregar enemigos al juego
     public void addEnemy(Enemy enemy) {
         enemies.add(enemy);
-        Path startCell = (Path) mapa.getEndCell().getContent();
-        startCell.addEnemy(enemy);
+//        startCell.addEnemy(enemy);
     }
 }

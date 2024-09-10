@@ -6,7 +6,7 @@ import org.example.Map.MapElements.Path;
 public class Map {
 
     public static final int rows = 10;
-    public static final int cols = 10;
+    public static final int cols = 20;
     /**
      * Inicializo el mapa como una matriz conformada por instancias de la cLase Cell
      *
@@ -26,29 +26,27 @@ public class Map {
                 map[i][j] = new Cell(i, j, null);
             }
         }
-        Path startPath = new Path(true);
-        // Este tiene que ser el Cerro de la Gloria
-        //path endCell = new path();
-        //this.endCell = map[rows - 1][cols - 1].setContent(endCell);
+        this.startCell = map[0][0];
+        this.endCell = map[0][cols - 1];
         crearCamino();
     }
 
     public void printMap() {
-        // Imprimo separacion entre tableros
+        // Imprimo separación entre tableros
         for (int i = 0; i <= 10; i++) {
             System.out.println();
         }
 
         // Imprimo encabezado de columnas
         System.out.print("  ");
-        for (int i = 1; i <= map[0].length; i++) {
-            System.out.print(" " + i + "  ");
+        for (int i = 0; i < map[0].length; i++) {
+            System.out.print(" " + (char) ('A' + i) + "  ");
         }
         System.out.println();
 
         // Imprimo filas con encabezados
         for (int i = 0; i < map.length; i++) {
-            System.out.print((char) ('A' + i) + " "); // Convierte índice a letra
+            System.out.print(i + " "); // Convierte índice a letra
             for (int j = 0; j < map[i].length; j++) {
                 // Imprimir 'C' si el contenido es una instancia de path, de lo contrario '*'
                 if (map[i][j].getContent() instanceof Path) {
@@ -68,7 +66,7 @@ public class Map {
     }
 
 
-    // este metodo va en la clase Level que aun no se implementara crea un camino horizontal a partir de la endCell
+    // Esta función va en la clase level que aún no se implementa, crea un camino horizontal a partir de la endCell
     public void crearCamino() {
         int startRow = 4; // Suponiendo que la salida está en la primera fila
         int startCol = -1; // Suponiendo que la salida está en la primera columna
