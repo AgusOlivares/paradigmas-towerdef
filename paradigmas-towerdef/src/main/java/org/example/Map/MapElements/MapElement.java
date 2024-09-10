@@ -1,6 +1,6 @@
-package org.example.Mapa.MapElements;
+package org.example.Map.MapElements;
 
-import org.example.Mapa.Cell;
+import org.example.Map.Cell;
 
 public abstract class MapElement {
     protected Cell cell;

@@ -1,7 +1,7 @@
-package org.example.Mapa;
+package org.example.Map;
 
-import org.example.Mapa.MapElements.CerroDeLaGloria;
-import org.example.Mapa.MapElements.pathCell;
+import org.example.Map.MapElements.CDLGloria;
+import org.example.Map.MapElements.Path;
 
 public class Map {
 
@@ -15,9 +15,9 @@ public class Map {
      * @since 19/08/2024
      */
 
-    private Cell[][] map;
-    private Cell endCell;
-    private Cell startCell;
+    public Cell[][] map;
+    public Cell startCell;
+    public Cell endCell;
 
     public void Map() {
         this.map = new Cell[rows][cols];
@@ -26,17 +26,14 @@ public class Map {
                 map[i][j] = new Cell(i, j, null);
             }
         }
-        pathCell InicioCamino = new pathCell(true);
-        // Este tiene que ser el cerro de la gloria
-        //pathCell FinalCamino = new pathCell();
-
-
-        //this.Llegada = map[rows - 1][cols - 1].setContent(FInalCamino);
-
+        Path startPath = new Path(true);
+        // Este tiene que ser el Cerro de la Gloria
+        //path endCell = new path();
+        //this.endCell = map[rows - 1][cols - 1].setContent(endCell);
         crearCamino();
     }
 
-    public void imprimirMatriz() {
+    public void printMap() {
         // Imprimo separacion entre tableros
         for (int i = 0; i <= 10; i++) {
             System.out.println();
@@ -53,14 +50,14 @@ public class Map {
         for (int i = 0; i < map.length; i++) {
             System.out.print((char) ('A' + i) + " "); // Convierte índice a letra
             for (int j = 0; j < map[i].length; j++) {
-                // Imprimir 'C' si el contenido es una instancia de pathCell, de lo contrario '*'
-                if (map[i][j].getContent() instanceof pathCell) {
-                    if (((pathCell) map[i][j].getContent()).isStart()) {
+                // Imprimir 'C' si el contenido es una instancia de path, de lo contrario '*'
+                if (map[i][j].getContent() instanceof Path) {
+                    if (((Path) map[i][j].getContent()).isStart()) {
                         System.out.print(" S |");
                     } else {
                         System.out.print("   |");
                     }
-                } else if (map[i][j].getContent() instanceof CerroDeLaGloria) {
+                } else if (map[i][j].getContent() instanceof CDLGloria) {
                     System.out.print(" C |");
                 } else {
                     System.out.print(" * |");
@@ -81,14 +78,14 @@ public class Map {
         for (int j = startCol + 1; j < map[startRow].length; j++) {
 
             if (j == (startCol + 1)) {
-                pathCell newPathCell = new pathCell(true);
-                currentCell = map[startRow][j].setContent(newPathCell);
+                Path newPath = new Path(true);
+                currentCell = map[startRow][j].setContent(newPath);
             } else if (j == map[startRow].length - 1) {
-                CerroDeLaGloria Cerro = new CerroDeLaGloria(2000);
+                CDLGloria Cerro = new CDLGloria(2000);
                 currentCell = map[startRow][j].setContent(Cerro);
             } else {
-                pathCell newPathCell = new pathCell();
-                currentCell = map[startRow][j].setContent(newPathCell);
+                Path newPath = new Path();
+                currentCell = map[startRow][j].setContent(newPath);
             }
         }
     }

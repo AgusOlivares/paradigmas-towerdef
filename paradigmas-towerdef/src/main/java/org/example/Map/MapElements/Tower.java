@@ -1,11 +1,10 @@
 package org.example.Torres;
 
 import org.example.Enemigos.Enemy;
-import org.example.Mapa.Cell;
-import org.example.Mapa.Map;
-import org.example.Mapa.MapElements.MapElement;
-import org.example.Mapa.MapElements.pathCell;
-import org.jetbrains.annotations.NotNull;
+import org.example.Map.Cell;
+import org.example.Map.Map;
+import org.example.Map.MapElements.MapElement;
+import org.example.Map.MapElements.Path;
 
 import java.util.ArrayList;
 
@@ -18,10 +17,10 @@ public class Tower extends MapElement {
     public double damage;
     public double cost;
     public int range;
-    public ArrayList<pathCell> atkCells;
+    public ArrayList<Path> atkCells;
     public ArrayList<Enemy> enemyQueue;
 
-    public Tower(double damageScale, double costScale, double rangeScale, @NotNull Map map) {
+    public Tower(double damageScale, double costScale, double rangeScale, Map map) {
         this.damage = damageScale * maxDamage;
         this.cost = costScale * maxCost;
         this.range = (int) (rangeScale * maxRange);
@@ -33,8 +32,8 @@ public class Tower extends MapElement {
     // Actualiza la cola de orden en el que la torre dispara
     public void updateEnemyOrder(ArrayList<Enemy> enemies) {
         this.enemyQueue = new ArrayList<>();
-        for (pathCell pathCell : this.atkCells) {
-            for (Enemy enemy : pathCell.getEnemies()) {
+        for (Path path : this.atkCells) {
+            for (Enemy enemy : path.getEnemies()) {
                 if (enemy != null && !this.enemyQueue.contains(enemy)) {
                     this.enemyQueue.add(enemy);
                 }
@@ -43,8 +42,8 @@ public class Tower extends MapElement {
     }
 
     // Encuentra las celdas (del camino enemigo) a las que la torre puede atacar
-    public ArrayList<pathCell> findAtkCells() {
-        ArrayList<pathCell> atkCells = new ArrayList<>();
+    public ArrayList<Path> findAtkCells() {
+        ArrayList<Path> atkCells = new ArrayList<>();
 
         int minRow = this.getRow() - this.range;
         int maxRow = this.getRow() + this.range;
@@ -54,9 +53,9 @@ public class Tower extends MapElement {
 
         for (int i = minRow; i <= maxRow; i++) {
             for (int j = minCol; j <= maxCol; j++) {
-                if (i >= 0 && i < this.map.length && j >= 0 && j < this.map[0].length) {
-                    if (this.map[i][j].getContent() instanceof pathCell) {
-                        atkCells.add((pathCell) this.map[i][j].getContent());
+                if (i >= 0 && i < Map.rows && j >= 0 && j < Map.cols) {
+                    if (this.map[i][j].getContent() instanceof Path) {
+                        atkCells.add((Path) this.map[i][j].getContent());
                     }
                 }
             }

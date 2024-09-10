@@ -1,6 +1,6 @@
-package org.example.Mapa;
+package org.example.Map;
 
-import org.example.Mapa.MapElements.MapElement;
+import org.example.Map.MapElements.MapElement;
 
 /**
  * La clase Cell va a componer el mapa del nivel y es la encargada de contener ya sean casillas de torre, casillas de camino enemigo o pasto.
@@ -9,21 +9,20 @@ import org.example.Mapa.MapElements.MapElement;
  * @version 1.0
  * @since 19/08/2024
  */
-public class Cell {
 
+public class Cell {
     public int col;
     public int row;
     public MapElement content;
 
     public Cell(int col, int row, MapElement content) {
-        this.col = col; // Corregido para asignar los valores recibidos
-        this.row = row; // Corregido para asignar los valores recibidos
-        this.content = content;
+        this.col = col;
+        this.row = row;
+        this.setContent(content);
     }
 
-    // Función de prueba para impresión
     public char getValor() {
-        return this.content != null ? 'C' : ' '; // 'C' si hay contenido, 'X' si no
+        return this.content != null ? 'C' : ' ';
     }
 
     public MapElement getContent() {
@@ -32,6 +31,9 @@ public class Cell {
 
     public Cell setContent(MapElement content) {
         this.content = content;
-        return this; // Devuelve la celda para un encadenamiento conveniente
+        if (content != null) {
+            content.setCell(this);
+        }
+        return this;
     }
 }

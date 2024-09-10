@@ -1,10 +1,9 @@
 package org.example.Enemigos;
 
-import org.example.Mapa.MapElements.pathCell;
+import org.example.Map.MapElements.Path;
 
 public abstract class Enemy {
-
-    pathCell cell;
+    Path cell;
     int health;
     int gold;
     int magic;
@@ -23,17 +22,31 @@ public abstract class Enemy {
         this.debuffState = false;
     }
 
-    public pathCell getCell() {
+    public Path getCell() {
         return cell;
+    }
+
+    public void setCell(Path cell) {
+        this.cell = cell;
+    }
+
+    public int getRow() {
+        return this.cell != null && this.cell.getCell() != null ? this.cell.getCell().row : -1;
+    }
+
+    public int getCol() {
+        return this.cell != null && this.cell.getCell() != null ? this.cell.getCell().col : -1;
     }
 
     public void setDebuff(boolean state) {
         this.debuffState = state;
-        if (state)
-            if (this.walkRate > 1)
-                this.walkRate = (int) this.walkRate / 2;
-            else
-                this.walkRate = (int) this.walkRate * 2;
+        if (state) {
+            if (this.walkRate > 1) {
+                this.walkRate = this.walkRate / 2;
+            } else {
+                this.walkRate = this.walkRate * 2;
+            }
+        }
     }
 
     public boolean isAlive() {
@@ -50,11 +63,9 @@ public abstract class Enemy {
             enemy.setDebuff(false);
         }
     }
-        /*
+/*
         public void attackCerro (Enemy enemy, CerroDeLaGloria cerro){
-            if (enemy.cell.next instanceof MapElement.CerroDeLaGloria) {
+            if (enemy.position.next instanceof MapElement.CerroDeLaGloria) {
                 cerro.health = cerro.health - enemy.damage;
             }*/
 }
-
-

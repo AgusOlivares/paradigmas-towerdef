@@ -1,8 +1,8 @@
 package org.example;
 
 import org.example.Enemigos.Enemy;
-import org.example.Mapa.Map;
-import org.example.Mapa.MapElements.pathCell;
+import org.example.Map.Map;
+import org.example.Map.MapElements.Path;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ public class Game {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                mapa.imprimirMatriz();
+                mapa.printMap();
             }
         }, 0, 500); // Imprime el mapa cada 0.5 segundos
 
@@ -42,7 +42,7 @@ public class Game {
             @Override
             public void run() {
                 for (Enemy enemy : enemies) {
-                    enemy.walk(enemy); // Mover cada enemigo al siguiente pathCell
+                    enemy.walk(enemy); // Mover cada enemigo al siguiente path
                 }
             }
         }, 1000, 1000); // Ejecuta cada 1 segundo
@@ -51,7 +51,7 @@ public class Game {
     // Método para agregar enemigos al juego
     public void addEnemy(Enemy enemy) {
         enemies.add(enemy);
-        pathCell startCell = (pathCell) mapa.getEndCell().getContent();
+        Path startCell = (Path) mapa.getEndCell().getContent();
         startCell.addEnemy(enemy);
     }
 }

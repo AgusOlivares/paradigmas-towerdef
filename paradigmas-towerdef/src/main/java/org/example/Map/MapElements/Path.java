@@ -1,23 +1,23 @@
-package org.example.Mapa.MapElements;
+package org.example.Map.MapElements;
 
 import org.example.Enemigos.Enemy;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class pathCell extends MapElement {
+public class Path extends MapElement {
 
     public boolean isStart;
     public List<Enemy> enemies; // Lista de enemigos en esta celda
-    public pathCell next; // Puntero al siguiente nodo del camino
+    public Path next; // Puntero al siguiente nodo del camino
 
-    public pathCell() {
+    public Path() {
         this.enemies = new ArrayList<>();
         this.next = null;
         this.isStart = false;
     }
 
-    public pathCell(boolean start) {
+    public Path(boolean start) {
         this.enemies = new ArrayList<>();
         this.next = null;
         this.isStart = start;
@@ -31,11 +31,11 @@ public class pathCell extends MapElement {
         this.enemies.add(enemy);
     }
 
-    public pathCell getNext() {
+    public Path getNext() {
         return next;
     }
 
-    public void setNext(pathCell next) {
+    public void setNext(Path next) {
         this.next = next;
     }
 
