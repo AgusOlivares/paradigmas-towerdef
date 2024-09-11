@@ -54,11 +54,16 @@ public abstract class Enemy {
     }
 
     public void walk(Enemy enemy) {
-        for (int i = 0; i == this.walkRate; i++) {
+        for (int i = 0; i < this.walkRate; i++) {
+
             if (enemy.cell.next != null) {
-                enemy.cell.enemies.remove(enemy);
-                enemy.cell = enemy.cell.next;
+                enemy.cell.enemies.remove(enemy); // remuevo al enemigo de la lista de enemigos de la celda
+                Path nuevaCelda = enemy.cell.next; // Puntero a la proxima celda del camino
+                enemy.cell = nuevaCelda;
+                enemy.setCell(nuevaCelda);
                 enemy.cell.addEnemy(enemy);
+            } else {
+                break;
             }
             enemy.setDebuff(false);
         }

@@ -53,7 +53,7 @@ public class Tower extends MapElement {
 
         for (int i = minRow; i <= maxRow; i++) {
             for (int j = minCol; j <= maxCol; j++) {
-                if (i >= 0 && i < Map.rows && j >= 0 && j < Map.cols) {
+                if (i >= 0 && i < Map.ROWS && j >= 0 && j < Map.COLS) {
                     if (this.map[i][j].getContent() instanceof Path) {
                         atkCells.add((Path) this.map[i][j].getContent());
                     }
