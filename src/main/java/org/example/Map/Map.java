@@ -70,17 +70,17 @@ public class Map {
         for (int j = 0; j < COLS; j++) {
             if (j == COLS - 1) {
                 // La última celda es el Cerro de la Gloria
-                CDLGloria cerro = new CDLGloria(2000);
+                CDLGloria cerro = new CDLGloria(startRow, j, 1000);
                 grid[startRow][j].setContent(cerro);
                 this.endCell = grid[startRow][j]; // Actualizamos la celda final
             } else {
 
                 if (j == 0) {
-                    Path newPath = new Path(true);
+                    Path newPath = new Path(startRow, j, true);
                     grid[startRow][j].setContent(newPath);
                 }
                 // Crear un nuevo Path en las celdas intermedias
-                Path newPath = new Path();
+                Path newPath = new Path(startRow, j);
                 grid[startRow][j].setContent(newPath);
 
                 // Conectar la celda anterior con la nueva celda

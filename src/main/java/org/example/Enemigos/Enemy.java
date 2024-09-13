@@ -1,25 +1,33 @@
 package org.example.Enemigos;
 
+import org.example.Map.Map;
+import org.example.Map.MapElements.CDLGloria;
+import org.example.Map.MapElements.MapElement;
 import org.example.Map.MapElements.Path;
 
-public abstract class Enemy {
-    Path cell;
-    int health;
-    int gold;
-    int magic;
-    int damage;
-    int walkRate;
-    int range;
-    boolean debuffState;
+public abstract class Enemy extends MapElement {
 
-    public Enemy(int health, int gold, int magic, int damage, int walkRate, int range) {
+    public Path cell;
+    public Map map;
+    public int health;
+    public int gold;
+    public int magika;
+    public int damage;
+    public int speed;
+    public int range;
+    public boolean debuffed;
+
+    public Enemy(int row, int col, Map map, int health, int gold, int magika, int damage, int speed, int range) {
+        super(row, col);
+        this.map = map;
+        this.cell = (Path) map.getCell(row, col).getContent();
         this.health = health;
         this.gold = gold;
-        this.magic = magic;
+        this.magika = magika;
         this.damage = damage;
-        this.walkRate = walkRate;
+        this.speed = speed;
         this.range = range;
-        this.debuffState = false;
+        this.debuffed = false;
     }
 
     public Path getCell() {
@@ -30,21 +38,13 @@ public abstract class Enemy {
         this.cell = cell;
     }
 
-    public int getRow() {
-        return this.cell != null && this.cell.getCell() != null ? this.cell.getCell().row : -1;
-    }
-
-    public int getCol() {
-        return this.cell != null && this.cell.getCell() != null ? this.cell.getCell().col : -1;
-    }
-
     public void setDebuff(boolean state) {
-        this.debuffState = state;
+        this.debuffed = state;
         if (state) {
-            if (this.walkRate > 1) {
-                this.walkRate = this.walkRate / 2;
+            if (this.speed > 1) {
+                this.speed = this.speed / 2;
             } else {
-                this.walkRate = this.walkRate * 2;
+                this.speed = this.speed * 2;
             }
         }
     }
@@ -54,27 +54,40 @@ public abstract class Enemy {
     }
 
     public void walk(Enemy enemy) {
-        for (int i = 0; i < this.walkRate; i++) {
-
-            if (enemy.cell.next != null) {
-                enemy.cell.enemies.remove(enemy); // remuevo al enemigo de la lista de enemigos de la celda
-                Path nuevaCelda = enemy.cell.next; // Puntero a la proxima celda del camino
-                enemy.cell = nuevaCelda;
-                enemy.setCell(nuevaCelda);
-                enemy.cell.addEnemy(enemy);
-            } else {
+        for (int i = 0; i < this.speed; i++) {
+            enemy.cell.enemies.remove(enemy); // remuevo al enemigo de la lista de enemigos de la celda
+            Path nuevaCelda = enemy.cell.next; // Puntero a la proxima celda del camino
+            enemy.cell = nuevaCelda;
+            enemy.setCell(nuevaCelda);
+            enemy.cell.addEnemy(enemy);
+            if (nextIsCerro()) {
                 break;
             }
-            enemy.setDebuff(false);
         }
+        enemy.setDebuff(false);
+    }
+
+
+    public void controller(Enemy enemy) {
+        if (!nextIsCerro())
+            walk(enemy);
+        else
+            attackCerro();
+    }
+
+    public boolean nextIsCerro() {
+        Path nextPath = this.cell.next;
+        int nextPathRow = nextPath.getRow();
+        int nextPathCol = nextPath.getCol();
+        return map.getGrid()[nextPathRow][nextPathCol] == map.getEndCell();
     }
 
     public void receiveDamage(int damage) {
         this.health = this.health - damage;
     }
-/*
-        public void attackCerro (Enemy enemy, CerroDeLaGloria cerro){
-            if (enemy.position.next instanceof MapElement.CerroDeLaGloria) {
-                cerro.health = cerro.health - enemy.damage;
-            }*/
+
+    public void attackCerro() {
+        CDLGloria cerro = (CDLGloria) map.getEndCell().getContent();
+        cerro.setHealth(cerro.getHealth() - this.damage);
+    }
 }

@@ -1,23 +1,21 @@
 package org.example.Enemigos;
 
 
-public class EnemyDwarf extends Enemy {
-    int baseHealth;
-    int baseDamage;
-    int baseSpeed;
+import org.example.Map.Map;
 
-    public EnemyDwarf() {
-        super(70, 20, 10, 7, 1, 1);
-        this.baseHealth = 70;
-        this.baseDamage = 20;
-        this.baseSpeed = 1;
+public class EnemyDwarf extends Enemy {
+    public int baseHealth;
+    public int baseDamage;
+    public int baseSpeed;
+
+    public EnemyDwarf(int row, int col, Map map, int health, int gold, int magika, int damage, int speed, int range) {
+        super(row, col, map, health, gold, magika, damage, speed, range);
     }
 
-    public void dwarfBuff(EnemyDwarf dwarf) {
-        float buff = (float) dwarf.baseHealth / 2;
-        if (dwarf.health >= buff) {
-            dwarf.damage = dwarf.baseDamage * 2;
-            dwarf.walkRate = dwarf.baseSpeed * 2;
+    public void gigaDwarf() {
+        if (health < health / 2) {
+            damage = damage * 2;
+            speed = speed * 2;
         }
     }
 }

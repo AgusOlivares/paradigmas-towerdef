@@ -11,13 +11,15 @@ public class Path extends MapElement {
     public List<Enemy> enemies; // Lista de enemigos en esta celda
     public Path next; // Puntero al siguiente nodo del camino
 
-    public Path() {
+    public Path(int row, int col) {
+        super(row, col);
         this.enemies = new ArrayList<>();
         this.next = null;
         this.isStart = false;
     }
 
-    public Path(boolean start) {
+    public Path(int row, int col, boolean start) {
+        super(row, col);
         this.enemies = new ArrayList<>();
         this.next = null;
         this.isStart = start;
