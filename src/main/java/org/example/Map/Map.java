@@ -8,33 +8,25 @@ public class Map {
     public static final int ROWS = 10;
     public static final int COLS = 20;
 
-    /**
-     * Inicializo el mapa como una matriz conformada por instancias de la clase Cell
-     */
     private Cell[][] grid;
     private Cell startCell;
     private Cell endCell;
 
-    // Constructor de la clase Map
     public Map() {
         this.grid = new Cell[ROWS][COLS];
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
-                grid[i][j] = new Cell(null); // Inicializa las celdas vacías
+                grid[i][j] = new Cell(null);
             }
         }
 
-        this.startCell = grid[4][0]; // Celda de inicio
-        this.endCell = grid[4][COLS - 1]; // Celda de fin
-        crearCamino(); // Crea el camino en el mapa
+        this.startCell = grid[4][0];
+        this.endCell = grid[4][COLS - 1];
+        createPath();
     }
 
-    // Método para imprimir el mapa
     public void printMap() {
-        // Imprimo separación entre tableros
-        for (int i = 0; i <= 10; i++) {
-            System.out.println();
-        }
+        System.out.println();
 
         // Imprimo encabezado de columnas
         System.out.print("  ");
@@ -71,8 +63,7 @@ public class Map {
         }
     }
 
-    // Método que crea el camino en el mapa, conectando las celdas de startCell a endCell
-    public void crearCamino() {
+    public void createPath() {
         int startRow = 4; // Fila fija para el camino
         Cell currentCell = this.startCell; // Comenzamos desde la celda de inicio
 
@@ -101,17 +92,12 @@ public class Map {
         }
     }
 
-    // Método para obtener una celda del mapa
     public Cell getCell(int row, int col) {
         return grid[row][col];
     }
 
     public Cell[][] getGrid() {
         return grid;
-    }
-
-    public void setGrid(Cell[][] grid) {
-        this.grid = grid;
     }
 
     public Cell getStartCell() {
