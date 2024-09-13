@@ -3,6 +3,8 @@ package org.example.Map;
 import org.example.Map.MapElements.CDLGloria;
 import org.example.Map.MapElements.Path;
 
+import java.util.Random;
+
 public class Map {
 
     public static final int ROWS = 10;
@@ -20,8 +22,6 @@ public class Map {
             }
         }
 
-        this.startCell = grid[4][0];
-        this.endCell = grid[4][COLS - 1];
         createPath();
     }
 
@@ -63,33 +63,56 @@ public class Map {
         }
     }
 
+    /*public void createPath() {
+        Random random = new Random();
+        int startRow = random.nextInt(ROWS); // Random starting row on the left side
+        Cell currentCell = this.startCell = grid[startRow][0]; // Start from the random start cell
+
+        */
+
     public void createPath() {
-        int startRow = 4; // Fila fija para el camino
-        Cell currentCell = this.startCell; // Comenzamos desde la celda de inicio
+        Random random = new Random();
+        int startRow = random.nextInt(ROWS);
 
-        for (int j = 0; j < COLS; j++) {
-            if (j == COLS - 1) {
-                // La última celda es el Cerro de la Gloria
-                CDLGloria cerro = new CDLGloria(startRow, j, 1000);
-                grid[startRow][j].setContent(cerro);
-                this.endCell = grid[startRow][j]; // Actualizamos la celda final
+
+        this.startCell = grid[startRow][0];
+        int currentRow = startRow;
+        int currentCol = 0;
+        Cell currentCell = grid[startRow][currentCol];
+        Path startPath = new Path(currentRow, currentCol);
+        grid[currentRow][currentCol].setContent(startPath);
+
+        while (currentCol < COLS - 1) {
+            int direction = random.nextInt(3); // 0 = right, 1 = up, 2 = down
+
+            if (direction == 0 && currentCol < COLS - 1) {
+                // Move right
+                currentCol++;
+            } else if (direction == 1 && currentRow > 0) {
+                // Move up
+                currentRow--;
+            } else if (direction == 2 && currentRow < ROWS - 1) {
+                // Move down
+                currentRow++;
             } else {
-
-                if (j == 0) {
-                    Path newPath = new Path(startRow, j, true);
-                    grid[startRow][j].setContent(newPath);
-                }
-                // Crear un nuevo Path en las celdas intermedias
-                Path newPath = new Path(startRow, j);
-                grid[startRow][j].setContent(newPath);
-
-                // Conectar la celda anterior con la nueva celda
-                if (currentCell.getContent() instanceof Path) {
-                    ((Path) currentCell.getContent()).setNext(newPath);
-                }
-                currentCell = grid[startRow][j]; // Avanzar a la siguiente celda
+                // If the direction is invalid, continue to the next iteration
+                continue;
             }
+
+            Path newPath = new Path(currentRow, currentCol);
+            grid[currentRow][currentCol].setContent(newPath);
+
+            // Connect the previous cell with the new cell
+            if (currentCell.getContent() instanceof Path) {
+                ((Path) currentCell.getContent()).setNext(newPath);
+            }
+            currentCell = grid[currentRow][currentCol]; // Move to the next cell
         }
+
+        // The last cell is the Cerro de la Gloria
+        CDLGloria cerro = new CDLGloria(currentRow, COLS - 1, 1000);
+        grid[currentRow][COLS - 1].setContent(cerro);
+        this.endCell = grid[currentRow][COLS - 1]; // Update the end cell
     }
 
     public Cell getCell(int row, int col) {

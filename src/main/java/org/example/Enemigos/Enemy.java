@@ -67,7 +67,6 @@ public abstract class Enemy extends MapElement {
         enemy.setDebuff(false);
     }
 
-
     public void controller(Enemy enemy) {
         if (!nextIsCerro())
             walk(enemy);
