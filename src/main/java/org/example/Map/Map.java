@@ -1,7 +1,13 @@
 package org.example.Map;
 
+import org.example.Enemigos.EnemyDwarf;
+import org.example.Enemigos.EnemyElf;
+import org.example.Enemigos.EnemyHobbit;
+import org.example.Enemigos.EnemyHuman;
 import org.example.Map.MapElements.CDLGloria;
+import org.example.Map.MapElements.MapElement;
 import org.example.Map.MapElements.Path;
+import org.example.Map.MapElements.Tower;
 
 import java.util.Random;
 
@@ -38,8 +44,9 @@ public class Map {
         for (int i = 0; i < grid.length; i++) {
             System.out.print(i + " "); // Muestra el índice de la fila
             for (int j = 0; j < grid[i].length; j++) {
-                if (grid[i][j].getContent() instanceof Path) {
-                    Path currentPath = (Path) grid[i][j].getContent();
+                MapElement element = grid[i][j].getContent();
+                if (element instanceof Path) {
+                    Path currentPath = (Path) element;
 
                     // Si es el inicio del camino
                     if (currentPath.isStart()) {
@@ -49,26 +56,32 @@ public class Map {
                         if (!currentPath.getEnemies().isEmpty()) {
                             switch (currentPath.getEnemies().size()) {
                                 case 1:
-                                    System.out.print(" 1 |"); // Un enemigo
-                                    break;
+                                    if (currentPath.getEnemies().get(0) instanceof EnemyElf) {
+                                        System.out.print(" E |");
+                                    } else if (currentPath.getEnemies().get(0) instanceof EnemyHuman) {
+                                        System.out.print(" H |");
+                                    } else if (currentPath.getEnemies().get(0) instanceof EnemyHobbit) {
+                                        System.out.print(" B |");
+                                    } else if (currentPath.getEnemies().get(0) instanceof EnemyDwarf) {
+                                        System.out.print(" D |");
+                                    }
                                 case 2:
                                     System.out.print(" 2 |"); // Dos enemigos
                                     break;
-                                case 3:
-                                    System.out.print(" 3 |"); // Tres enemigos
-                                    break;
                                 default:
-                                    System.out.print(" E |"); // Más de tres enemigos
+                                    System.out.print(" ! |");
                                     break;
                             }
                         } else {
                             System.out.print(" * |"); // Celda vacía
                         }
                     }
-                } else if (grid[i][j].getContent() instanceof CDLGloria) {
+                } else if (element instanceof CDLGloria) {
                     System.out.print(" C |"); // Imprimir 'C' si es CDLGloria
+                } else if (element instanceof Tower) {
+                    System.out.print(" T |"); // Imprimir 'T' si es una torre
                 } else {
-                    System.out.print("   |"); // Imprimir '*' si no es un camino ni CDLGloria
+                    System.out.print("   |"); // Celda vacía
                 }
             }
             System.out.println();
