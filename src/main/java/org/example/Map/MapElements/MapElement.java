@@ -3,13 +3,20 @@ package org.example.Map.MapElements;
 import org.example.Map.Cell;
 
 public abstract class MapElement {
-    protected Cell cell;
+    public int row;
+    public int col;
 
-    public Cell getCell() {
-        return cell;
+    public MapElement(int row, int col) {
+        this.row = row;
+        this.col = col;
     }
 
-    public void setCell(Cell cell) {
-        this.cell = cell;
+    public int getRow() {
+        return this.row;
     }
+
+    public int getCol() {
+        return this.col;
+    }
+
 }

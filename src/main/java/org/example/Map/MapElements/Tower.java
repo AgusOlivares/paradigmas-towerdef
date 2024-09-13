@@ -1,37 +1,43 @@
-package org.example.Torres;
+package org.example.Map.MapElements;
 
 import org.example.Enemigos.Enemy;
 import org.example.Map.Cell;
 import org.example.Map.Map;
-import org.example.Map.MapElements.MapElement;
-import org.example.Map.MapElements.Path;
 
 import java.util.ArrayList;
 
 public class Tower extends MapElement {
-    private static final double maxDamage = 100;
-    private static final double maxCost = 600;
-    private static final double maxRange = 7;
-    public Cell[][] map;
-
-    public double damage;
-    public double cost;
+    public int damage;
+    public int cost;
     public int range;
+    public Map map;
     public ArrayList<Path> atkCells;
     public ArrayList<Enemy> enemyQueue;
 
-    public Tower(double damageScale, double costScale, double rangeScale, Map map) {
-        this.damage = damageScale * maxDamage;
-        this.cost = costScale * maxCost;
-        this.range = (int) (rangeScale * maxRange);
-        this.atkCells = findAtkCells();
-        this.enemyQueue = null;
-        this.map = map.getMap();
+    public Tower(int row, int col, int damage, int cost, int range, Map map) {
+        super(row, col);
+        this.damage = damage;
+        this.cost = cost;
+        this.range = range;
+        this.map = map;
+        this.atkCells = this.findAtkCells();
+        this.enemyQueue = new ArrayList<>();
     }
 
-    // Actualiza la cola de orden en el que la torre dispara
-    public void updateEnemyOrder(ArrayList<Enemy> enemies) {
-        this.enemyQueue = new ArrayList<>();
+    // Ataca al enemigo en la cola ordenada
+    public void attack() {
+        if (!this.enemyQueue.isEmpty()) {
+            Enemy enemy = this.enemyQueue.get(0);
+            enemy.receiveDamage(this.damage);
+            if (!enemy.isAlive()) {
+                this.enemyQueue.remove(enemy);
+            }
+        }
+    }
+
+    // Actualiza la cola ordenada de enemigos
+    public void updateEnemyOrder() {
+        enemyQueue = new ArrayList<>();
         for (Path path : this.atkCells) {
             for (Enemy enemy : path.getEnemies()) {
                 if (enemy != null && !this.enemyQueue.contains(enemy)) {
@@ -41,7 +47,7 @@ public class Tower extends MapElement {
         }
     }
 
-    // Encuentra las celdas (del camino enemigo) a las que la torre puede atacar
+    // Encuentra las celdas (que pertenenecen al camino enemigo) a las que la torre puede atacar
     public ArrayList<Path> findAtkCells() {
         ArrayList<Path> atkCells = new ArrayList<>();
 
@@ -49,13 +55,15 @@ public class Tower extends MapElement {
         int maxRow = this.getRow() + this.range;
         int minCol = this.getCol() - this.range;
         int maxCol = this.getCol() + this.range;
+        Cell[][] grid = this.map.getGrid();
 
 
         for (int i = minRow; i <= maxRow; i++) {
             for (int j = minCol; j <= maxCol; j++) {
                 if (i >= 0 && i < Map.ROWS && j >= 0 && j < Map.COLS) {
-                    if (this.map[i][j].getContent() instanceof Path) {
-                        atkCells.add((Path) this.map[i][j].getContent());
+                    Cell cell = grid[i][j];
+                    if (cell.getContent() instanceof Path) {
+                        atkCells.add((Path) cell.getContent());
                     }
                 }
             }
@@ -74,11 +82,52 @@ public class Tower extends MapElement {
         return (enemyRow >= minRow && enemyRow <= maxRow) && (enemyCol >= minCol && enemyCol <= maxCol);
     }
 
-    public int getRow() {
-        return this.cell != null ? this.cell.row : -1;
+    public int getDamage() {
+        return damage;
     }
 
-    public int getCol() {
-        return this.cell != null ? this.cell.col : -1;
+    public int getCost() {
+        return cost;
     }
+
+    public int getRange() {
+        return range;
+    }
+
+    public Map getMap() {
+        return map;
+    }
+
+    public ArrayList<Path> getAtkCells() {
+        return atkCells;
+    }
+
+    public ArrayList<Enemy> getEnemyQueue() {
+        return enemyQueue;
+    }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
+
+    public void setCost(int cost) {
+        this.cost = cost;
+    }
+
+    public void setRange(int range) {
+        this.range = range;
+    }
+
+    public void setMap(Map map) {
+        this.map = map;
+    }
+
+    public void setAtkCells(ArrayList<Path> atkCells) {
+        this.atkCells = atkCells;
+    }
+
+    public void setEnemyQueue(ArrayList<Enemy> enemyQueue) {
+        this.enemyQueue = enemyQueue;
+    }
+
 }

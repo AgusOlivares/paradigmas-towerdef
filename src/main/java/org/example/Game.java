@@ -2,13 +2,11 @@ package org.example;
 
 import org.example.Enemigos.Enemy;
 import org.example.Map.Map;
-import org.example.Map.MapElements.MapElement;
 import org.example.Map.MapElements.Path;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -17,14 +15,14 @@ public class Game {
 
     private ScheduledExecutorService scheduler;
     public Map map; //lo cambie a publico a proposito
-    private List<Enemy> LevelEnemies;
+    private List<Enemy> levelEnemies;
     private Timer timer;
 
     // Constructor de la clase Game
     public Game() {
-        Map mapaGame = new Map();
-        this.map = mapaGame;
-        this.LevelEnemies = new ArrayList<>();
+        Map gameMap = new Map();
+        this.map = gameMap;
+        this.levelEnemies = new ArrayList<>();
         this.timer = new Timer();
 
     }
@@ -40,7 +38,7 @@ public class Game {
 
         // Mueve a los enemigos cada 1 segundo
         scheduler.scheduleAtFixedRate(() -> {
-            for (Enemy enemy : LevelEnemies) {
+            for (Enemy enemy : levelEnemies) {
                 enemy.walk(enemy);
             }
         }, 1, 1, TimeUnit.SECONDS);
@@ -81,7 +79,7 @@ public class Game {
     /*
     // Función para agregar enemigos al juego
     public void addEnemy(Enemy enemy) {
-        this.LevelEnemies.add(enemy);
+        this.levelEnemies.add(enemy);
         Path salida = (Path) map.getStartCell().getContent();
         //salida.addEnemy(enemy); la lista de abajo no agrega el enemigo a la lista de la celda, por eso no lo renderiza
         //startCell.addEnemy(enemy);
@@ -90,7 +88,7 @@ public class Game {
 
     public void addEnemy(Enemy enemy) {
         // Agregar al enemigo a la lista general de enemigos del nivel
-        this.LevelEnemies.add(enemy);
+        this.levelEnemies.add(enemy);
 
         // Obtener la celda de salida (start cell) del mapa
         Path salida = (Path) map.getStartCell().getContent();

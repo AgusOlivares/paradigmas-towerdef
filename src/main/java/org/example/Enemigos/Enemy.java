@@ -68,6 +68,10 @@ public abstract class Enemy {
             enemy.setDebuff(false);
         }
     }
+
+    public void receiveDamage(int damage) {
+        this.health = this.health - damage;
+    }
 /*
         public void attackCerro (Enemy enemy, CerroDeLaGloria cerro){
             if (enemy.position.next instanceof MapElement.CerroDeLaGloria) {
