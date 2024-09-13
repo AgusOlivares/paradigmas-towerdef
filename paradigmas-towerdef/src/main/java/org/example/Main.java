@@ -8,5 +8,6 @@ public class Main {
         EnemyDwarf enemy = new EnemyDwarf();
         game.addEnemy(enemy);
         game.playGame();
+        game.map.printMap();
     }
 }

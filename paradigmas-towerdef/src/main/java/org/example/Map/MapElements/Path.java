@@ -27,6 +27,10 @@ public class Path extends MapElement {
         return enemies;
     }
 
+    public void setEnemies(List<Enemy> enemies) {
+        this.enemies = enemies;
+    }
+
     public void addEnemy(Enemy enemy) {
         this.enemies.add(enemy);
     }
@@ -48,8 +52,3 @@ public class Path extends MapElement {
     }
 }
 
-
-// estas proximas lineas de codigo son para agregarle a la casilla final que es el cerro de la gloria
-// VIDA_MAX = 1000 por ej
-// public int Vida;
-// public void RecargarVida(){setVida=VIDA_MAX} para facilitarte el metodo de pasar de nivel
