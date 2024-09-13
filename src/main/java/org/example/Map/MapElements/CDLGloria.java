@@ -1,9 +1,11 @@
 package org.example.Map.MapElements;
 
 public class CDLGloria extends MapElement {
-    private int health;
 
-    public CDLGloria(int health) {
+    public int health;
+
+    public CDLGloria(int row, int col, int health) {
+        super(row, col);
         this.health = health;
     }
 
