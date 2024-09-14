@@ -7,18 +7,16 @@ import org.example.Map.Map;
 import java.util.ArrayList;
 
 public class Tower extends MapElement {
-    public int damage;
-    public int cost;
-    public int range;
     public Map map;
     public ArrayList<Path> atkCells;
     public ArrayList<Enemy> enemyQueue;
 
-    public Tower(int row, int col, int damage, int cost, int range, Map map) {
+    public int damage = 500;
+    public int cost = 100;
+    public int range = 2;
+
+    public Tower(int row, int col, Map map) {
         super(row, col);
-        this.damage = damage;
-        this.cost = cost;
-        this.range = range;
         this.map = map;
         this.atkCells = this.findAtkCells();
         this.enemyQueue = new ArrayList<>();
