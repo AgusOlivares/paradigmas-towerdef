@@ -92,4 +92,54 @@ public abstract class Enemy {
         CDLGloria cerro = (CDLGloria) map.getEndCell().getContent();
         cerro.setHealth(cerro.getHealth() - this.damage);
     }
+
+    // Getters & Setters
+    public Map getMap() {
+        return map;
+    }
+
+    public void setMap(Map map) {
+        this.map = map;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public int getGold() {
+        return gold;
+    }
+
+    public void setGold(int gold) {
+        this.gold = gold;
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public boolean isDebuffed() {
+        return debuffed;
+    }
+
+    public void setDebuffed(boolean debuffed) {
+        this.debuffed = debuffed;
+    }
+        //
 }

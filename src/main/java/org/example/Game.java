@@ -4,6 +4,7 @@ import org.example.Enemigos.*;
 import org.example.Map.Map;
 import org.example.Map.MapElements.Path;
 import org.example.Map.MapElements.Tower;
+import org.example.Player.Player;
 
 import java.util.*;
 import java.util.concurrent.Executors;
@@ -16,18 +17,20 @@ public class Game {
     public Map map;
     private List<Enemy> levelEnemies;
     private Timer timer;
+    public Player player;
 
     public Game() {
         Map gameMap = new Map(50);
         this.map = gameMap;
         this.levelEnemies = new ArrayList<>();
         this.timer = new Timer();
+        this.player = new Player("Javier");
     }
 
     public void playGame(int difficulty) {
         final int[] totalEnemies = {difficulty * 3};
 
-        scheduler = Executors.newScheduledThreadPool(1);
+        scheduler = Executors.newScheduledThreadPool(2);
 
         scheduler.scheduleAtFixedRate(() -> {
             map.printMap();
@@ -70,33 +73,33 @@ public class Game {
 
 //
 //
-//    public void generateEnemies(int difficulty) {
-//        final int[] totalEnemies = {difficulty * 10}; // Example: 10 enemies per difficulty level
-//        scheduler = Executors.newScheduledThreadPool(3);
-//
-//        scheduler.scheduleAtFixedRate(() -> {
-//            if (totalEnemies[0] > 0) {
-//                int enemyType = totalEnemies[0] % Enemy.enemyTypes; // Cycle through enemy types
-//                switch (enemyType) {
-//                    case 0:
-//                        addEnemy(new EnemyDwarf(map));
-//                        break;
-//                    case 1:
-//                        addEnemy(new EnemyElf(map));
-//                        break;
-//                    case 2:
-//                        addEnemy(new EnemyHuman(map));
-//                        break;
-//                    case 3:
-//                        addEnemy(new EnemyHobbit(map));
-//                        break;
-//                }
-//                totalEnemies[0]--;
-//            } else {
-//                scheduler.shutdown();
-//            }
-//        }, 0, 1000, TimeUnit.MILLISECONDS); // Spawn one enemy every second
-//    }
+    public void generateEnemies(int difficulty) {
+        final int[] totalEnemies = {difficulty * 10}; // Example: 10 enemies per difficulty level
+        scheduler = Executors.newScheduledThreadPool(3);
+
+        scheduler.scheduleAtFixedRate(() -> {
+            if (totalEnemies[0] > 0) {
+                int enemyType = totalEnemies[0] % Enemy.enemyTypes; // Cycle through enemy types
+                switch (enemyType) {
+                    case 0:
+                        addEnemy(new EnemyDwarf(map));
+                        break;
+                    case 1:
+                        addEnemy(new EnemyElf(map));
+                        break;
+                    case 2:
+                        addEnemy(new EnemyHuman(map));
+                        break;
+                    case 3:
+                        addEnemy(new EnemyHobbit(map));
+                        break;
+                }
+                totalEnemies[0]--;
+            } else {
+                scheduler.shutdown();
+            }
+        }, 0, 1000, TimeUnit.MILLISECONDS); // Spawn one enemy every second
+    }
 
     public void addTower() {
         Scanner scanner = new Scanner(System.in);
@@ -130,7 +133,7 @@ public class Game {
         } while (!valid);
 
     }
-
+///
 
     public void addEnemy(Enemy enemy) {
         this.levelEnemies.add(enemy);
@@ -138,4 +141,10 @@ public class Game {
         salida.addEnemy(enemy);
         enemy.setPath(salida);
     }
+
+
+
+
+
+
 }
