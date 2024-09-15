@@ -84,44 +84,44 @@ public class Tower extends MapElement {
         return damage;
     }
 
-    public int getCost() {
-        return cost;
-    }
-
-    public int getRange() {
-        return range;
-    }
-
-    public Map getMap() {
-        return map;
-    }
-
-    public ArrayList<Path> getAtkCells() {
-        return atkCells;
-    }
-
-    public ArrayList<Enemy> getEnemyQueue() {
-        return enemyQueue;
-    }
-
     public void setDamage(int damage) {
         this.damage = damage;
+    }
+
+    public int getCost() {
+        return cost;
     }
 
     public void setCost(int cost) {
         this.cost = cost;
     }
 
+    public int getRange() {
+        return range;
+    }
+
     public void setRange(int range) {
         this.range = range;
+    }
+
+    public Map getMap() {
+        return map;
     }
 
     public void setMap(Map map) {
         this.map = map;
     }
 
+    public ArrayList<Path> getAtkCells() {
+        return atkCells;
+    }
+
     public void setAtkCells(ArrayList<Path> atkCells) {
         this.atkCells = atkCells;
+    }
+
+    public ArrayList<Enemy> getEnemyQueue() {
+        return enemyQueue;
     }
 
     public void setEnemyQueue(ArrayList<Enemy> enemyQueue) {

@@ -1,7 +1,6 @@
 package org.example;
 
-import org.example.Enemigos.*;
-import org.example.Map.Map;
+import org.example.Enemigos.Enemy;
 import org.example.Map.MapElements.Path;
 import org.example.Map.MapElements.Tower;
 import org.example.Player.Player;
@@ -12,13 +11,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class Game implements gameInterface{
+public class Game implements gameInterface {
 
+    public Player player;
     private ScheduledExecutorService scheduler;
     private ArrayList<Enemy> levelEnemies;
     private Stack<Enemy> enemyPool;
     private Timer timer;
-    public Player player;
     private Level level;
 
     public Game() {
@@ -30,7 +29,7 @@ public class Game implements gameInterface{
     public boolean playGame() {
 
         int frequency;
-        switch (player.getLevel()){
+        switch (player.getLevel()) {
             case 1:
                 frequency = 5000;
                 break;
@@ -50,84 +49,46 @@ public class Game implements gameInterface{
         scheduler = Executors.newScheduledThreadPool(3);
 
         scheduler.scheduleAtFixedRate(() -> {
-            if (!level.getEnemiesInWave().isEmpty() && enemyPool.isEmpty()){
+            if (!level.getEnemiesInWave().isEmpty() && enemyPool.isEmpty()) {
                 enemyPool = level.getEnemiesInWave().pop();
             }
 
-            if (!enemyPool.isEmpty()){
+            if (!enemyPool.isEmpty()) {
                 levelEnemies.add(enemyPool.pop());
+
             }
-
-
-
-        }, 0, frequency, TimeUnit.MILLISECONDS );
+        }, 0, frequency, TimeUnit.MILLISECONDS);
 
         scheduler.scheduleAtFixedRate(() -> {
             level.getMap().printMap();
-        }, 0, 700, TimeUnit.MILLISECONDS);
+            System.out.println(player.getGold());
+        }, 0, 500, TimeUnit.MILLISECONDS);
 
         scheduler.scheduleAtFixedRate(() -> {
-            for (Enemy enemy : levelEnemies) {
-                enemy.controller(enemy);
+            Iterator<Enemy> iterator = levelEnemies.iterator();
+            while (iterator.hasNext()) {
+                Enemy enemy = iterator.next();
+                if (!enemy.isAlive()) {
+                    player.setGold(player.getGold() + enemy.getGold());
+                    iterator.remove();
+                    enemy.path.enemies.remove(enemy);
+                } else {
+                    enemy.controller(enemy);
+                }
+            }
+            for (Tower tower : player.getTowers()) {
+                tower.updateEnemyOrder();
+                tower.attack();
             }
             if (level.getMap().getCdlGloria().isDeath()) {
                 System.out.println("El Cerro ha caido! Fuimos derrotados");
                 scheduler.shutdown();
             }
-        }, 0, 1000, TimeUnit.MILLISECONDS);
+        }, 0, 1100, TimeUnit.MILLISECONDS);
+
 
         return true;
     }
-
-//    public void spawnEnemy() {
-//        int enemyType = new Random().nextInt(4);
-//        switch (enemyType) {
-//            case 0:
-//                addEnemy(new EnemyDwarf(map));
-//                break;
-//            case 1:
-//                addEnemy(new EnemyElf(map));
-//                break;
-//            case 2:
-//                addEnemy(new EnemyHuman(map));
-//                break;
-//            case 3:
-//                addEnemy(new EnemyHobbit(map));
-//                break;
-//        }
-//    }
-
-
-//
-//
-//    public void generateEnemies(int difficulty) {
-//        final int[] totalEnemies = {difficulty * 10}; // Example: 10 enemies per difficulty level
-//        scheduler = Executors.newScheduledThreadPool(3);
-//
-//        scheduler.scheduleAtFixedRate(() -> {
-//            if (totalEnemies[0] > 0) {
-//                int enemyType = totalEnemies[0] % Enemy.enemyTypes; // Cycle through enemy types
-//                switch (enemyType) {
-//                    case 0:
-//                        addEnemy(new EnemyDwarf(map));
-//                        break;
-//                    case 1:
-//                        addEnemy(new EnemyElf(map));
-//                        break;
-//                    case 2:
-//                        addEnemy(new EnemyHuman(map));
-//                        break;
-//                    case 3:
-//                        addEnemy(new EnemyHobbit(map));
-//                        break;
-//                }
-//                totalEnemies[0]--;
-//            } else {
-//                scheduler.shutdown();
-//            }
-//        }, 0, 1000, TimeUnit.MILLISECONDS); // Spawn one enemy every second
-//    }
-
 
     public void addEnemy(Enemy enemy) {
         this.levelEnemies.add(enemy);
@@ -156,11 +117,11 @@ public class Game implements gameInterface{
         this.player = new Player(playerName);
         System.out.println("Bienvenido al campo de batalla " + playerName + "!");
         System.out.println("Necesitamos tu ayuda para defender el Cerro de la Gloria");
-        Thread.sleep(1000);
+        //Thread.sleep(1000);
         System.out.println("Estas preparado? Vamos alla!");
-        Thread.sleep(3000);
+        //Thread.sleep(3000);
         level = new Level(player.getLevel());
-        transicionAsteriscos();
+        //transicionAsteriscos(); todo: descomentar
         printSpace();
 
         boolean aviableLevels = false;
@@ -171,13 +132,14 @@ public class Game implements gameInterface{
 
             while (!valid) {
 
-                System.out.println("A continaucion elije una de las siguientes opciones:");
+                System.out.println("A continuación elija una de las siguientes opciones:");
                 System.out.println("1 - Empezar el Juego");
                 System.out.println("2 - Ver Mapa");
                 System.out.println("3 - Ver instrucciones");
                 System.out.println("4 - Ver mis datos");
-                System.out.println("5");
-                System.out.println("6 - Salir");
+                System.out.println("5 - Colocar torre");
+                System.out.println("6 - Demoler torre");
+                System.out.println("7 - Salir");
 
                 String option = scanner.nextLine();
 
@@ -192,11 +154,16 @@ public class Game implements gameInterface{
                         ShowInstructions();
                         break;
                     case "4":
-                        System.out.println("Nombre jugador: " + player.getName());
-                        System.out.println("Nivel: " + player.getLevel());
-                        System.out.println("Oro disponible: " + player.getGold());
+                        ShowPlayerDetails();
                         break;
                     case "5":
+                        player.placeTower(level.getMap());
+
+                        break;
+                    case "6":
+                        player.demolishTower(level.getMap());
+                        break;
+                    case "7":
                         System.out.println("Te vas a rendir? como un cobarde?");
                         player.surrender();
                         valid = true;
@@ -204,17 +171,16 @@ public class Game implements gameInterface{
                     default:
                         System.out.println("Por favor ingrese una opcion valida");
                 }
+                printSpace();
             }
 
 
         }
 
 
-
-
     }
 
-    public void printTitle(){
+    public void printTitle() {
 
         System.out.println("===========    ||=======||     \\\\                //      ||======     ||====\\\\              ");
         System.out.println("===========    ||       ||      \\\\              //       ||           ||     ||         ");
@@ -231,9 +197,7 @@ public class Game implements gameInterface{
     }
 
 
-
-
-    public void printSpace(){
+    public void printSpace() {
         for (int i = 0; i < 15; i++) {
             System.out.println();
         }
@@ -244,14 +208,14 @@ public class Game implements gameInterface{
         String trans = "";
 
         for (int i = 0; i < 20; i++) {
-            trans += "*";
+            trans += " * ";
             System.out.println(trans);
             System.out.println();
-            Thread.sleep(200);
+            Thread.sleep(100);
         }
     }
 
-    public void ShowInstructions(){
+    public void ShowInstructions() {
         System.out.println("En el juego existen varios tipos de enemigos:");
         System.out.println();
         System.out.println("Humano: Es el enemigo comun lo veras aparecer en el mapa con una 'H'");
@@ -265,8 +229,13 @@ public class Game implements gameInterface{
         System.out.println();
     }
 
-    public void ShowPlayerDetails(){
+    public void ShowPlayerDetails() {
+        System.out.println("Nombre jugador: " + player.getName());
+        System.out.println("Nivel: " + player.getLevel());
+        System.out.println("Oro disponible: " + player.getGold());
+    }
 
-    };
+    ;
+
 
 }

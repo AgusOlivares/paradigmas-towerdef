@@ -2,10 +2,7 @@ package org.example;
 
 import org.example.Enemigos.*;
 import org.example.Map.Map;
-import org.example.Player.Player;
 
-import java.awt.*;
-import java.text.DecimalFormat;
 import java.util.Random;
 import java.util.Stack;
 
@@ -22,22 +19,22 @@ public class Level {
         this.map = gameMap;
         this.level = level;
 
-        switch (level){
+        switch (level) {
             case 1:
-                this.enemiesInLevel = new String[] {"Human"};
+                this.enemiesInLevel = new String[]{"Human"};
                 this.enemiesInWave = generarOleadas(4, 1);
                 break;
             case 2:
-                enemiesInLevel = new String[] {"Human", "Dwarf"};
-                this.enemiesInWave = generarOleadas(3, 2);
+                enemiesInLevel = new String[]{"Human", "Dwarf"};
+                this.enemiesInWave = generarOleadas(3, 3);
                 break;
             case 3:
-                enemiesInLevel = new String[] {"Human", "Dwarf", "Hobbit"};
-                this.enemiesInWave = generarOleadas(4, 2);
+                enemiesInLevel = new String[]{"Human", "Dwarf", "Hobbit"};
+                this.enemiesInWave = generarOleadas(4, 3);
                 break;
             case 4:
-                enemiesInLevel = new String[] {"Human", "Dwarf", "Hobbit", "Elf"};
-                this.enemiesInWave = generarOleadas(4, 3);
+                enemiesInLevel = new String[]{"Human", "Dwarf", "Hobbit", "Elf"};
+                this.enemiesInWave = generarOleadas(4, 4);
                 break;
             default:
                 break;
@@ -60,7 +57,7 @@ public class Level {
 
                 Enemy unit;
 
-                if (enemy == "Human"){
+                if (enemy == "Human") {
                     unit = new EnemyHuman(map);
                 } else if (enemy == "Dwarf") {
                     unit = new EnemyDwarf(map);
@@ -80,7 +77,7 @@ public class Level {
         return oleadas;
     }
 
-    public int WaveReward(){
+    public int WaveReward() {
         int reward = 0; //Gold
         for (Stack<Enemy> group : enemiesInWave) {
             for (Enemy unit : group) {

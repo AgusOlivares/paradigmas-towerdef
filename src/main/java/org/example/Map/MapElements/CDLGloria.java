@@ -17,7 +17,7 @@ public class CDLGloria extends MapElement {
         this.health = health;
     }
 
-    public boolean isDeath(){
+    public boolean isDeath() {
         return health <= 0;
     }
 }

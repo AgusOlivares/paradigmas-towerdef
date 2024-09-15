@@ -7,5 +7,4 @@ public interface gameInterface {
     public void ShowPlayerDetails();
 
 
-
 }

@@ -1,7 +1,5 @@
 package org.example.Map.MapElements;
 
-import org.example.Map.Cell;
-
 public abstract class MapElement {
     public int row;
     public int col;

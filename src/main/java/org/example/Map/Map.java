@@ -65,6 +65,7 @@ public class Map {
                                     } else if (currentPath.getEnemies().get(0) instanceof EnemyDwarf) {
                                         System.out.print(" D |");
                                     }
+                                    break;
                                 case 2:
                                     System.out.print(" 2 |"); // Dos enemigos
                                     break;
