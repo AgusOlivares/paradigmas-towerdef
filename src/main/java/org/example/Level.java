@@ -6,14 +6,14 @@ import org.example.Player.Player;
 
 import java.awt.*;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.Random;
+import java.util.Stack;
 
 public class Level {
 
     private int level;
     private Map map;
-    private ArrayList<ArrayList<Enemy>> enemiesInWave;
+    private Stack<Stack<Enemy>> enemiesInWave;
     private String[] enemiesInLevel;
 
 
@@ -46,13 +46,13 @@ public class Level {
     }
 
     // Método que genera las oleadas de enemigos
-    public ArrayList<ArrayList<Enemy>> generarOleadas(int numOleadas, int tamanoOla) {
+    public Stack<Stack<Enemy>> generarOleadas(int numOleadas, int tamanoOla) {
 
-        ArrayList<ArrayList<Enemy>> oleadas = new ArrayList<ArrayList<Enemy>>();
+        Stack<Stack<Enemy>> oleadas = new Stack<Stack<Enemy>>();
         Random random = new Random();
 
         for (int i = 0; i < numOleadas; i++) {
-            ArrayList<Enemy> ola = new ArrayList<Enemy>();
+            Stack<Enemy> ola = new Stack<Enemy>();
             for (int j = 0; j < tamanoOla; j++) {
                 // Selecciona un enemigo aleatorio de 'enemiesInLevel'
                 int randomIndex = random.nextInt(enemiesInLevel.length);
@@ -81,18 +81,44 @@ public class Level {
     }
 
     public int WaveReward(){
-
         int reward = 0; //Gold
-
-        for (ArrayList<Enemy> group : enemiesInWave) {
+        for (Stack<Enemy> group : enemiesInWave) {
             for (Enemy unit : group) {
                 int enemyGold = unit.getGold();
                 reward += enemyGold;
             }
         }
-
         return reward;
     }
 
+//    public ArrayList<Enemy> getAllEnemies(){
+//        ArrayList<Enemy> allEnemies = new ArrayList<>();
+//        for (Stack<Enemy> group : enemiesInWave) {
+//            for (Enemy unit : group) {
+//                allEnemies.add(unit);
+//            }
+//        }
+//
+//        return allEnemies;
+//    }
 
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public Map getMap() {
+        return map;
+    }
+
+    public void setMap(Map map) {
+        this.map = map;
+    }
+
+    public Stack<Stack<Enemy>> getEnemiesInWave() {
+        return enemiesInWave;
+    }
 }
