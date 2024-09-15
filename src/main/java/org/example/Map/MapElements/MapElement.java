@@ -2,6 +2,11 @@ package org.example.Map.MapElements;
 
 import org.example.Map.Cell;
 
+/**
+ * clase que modela los elementos que ocupan el mapa del juego
+ * @author Agustín Olivares
+ */
+
 public abstract class MapElement {
     public int row;
     public int col;

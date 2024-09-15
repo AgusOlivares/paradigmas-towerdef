@@ -4,39 +4,34 @@ package org.example.Enemigos;
 import org.example.Map.Map;
 
 /**
- * Especialización de la clase Enemy
+ * especialización de Enemy para el modelado de enemigo de tipo enano
  * @author Luciana Puentes
- * @version 1.3
- *
  */
 
 public class EnemyDwarf extends Enemy {
     public int baseHealth;
     public int baseDamage;
+    public int baseSpeed;
 
-    public EnemyDwarf(Map map) {
-        super(map, 100, 66, 10, 1);
-        this.baseHealth = 100;
-        this.baseDamage = 10;
+    public EnemyDwarf(int row, int col, Map map, int health, int gold, int magika, int damage, int speed, int range) {
+        super(row, col, map, health, gold, magika, damage, speed, range);
     }
 
     /**
-     * Método que duplica el daño base del enemigo tipo enano
-     * si éste tiene más de la mitad de la vida
-     * @
+     * método que aumenta el daño que inflinge el enano
+     * si se encuentra a más de la mitad de la vida
      */
-    public void buffDwarf(){
-       int buff=(int) (this.baseHealth/2);
-        if (this.health>=buff){
-            this.damage=this.baseDamage*2;
+    public void gigaDwarf() {
+        /**
+         * si la vida actual del enano es maypr a la mitad de su vida base,
+         * establece su daño como el doble del daño base
+         */
+        if (health > (int)baseHealth / 2) {
+            damage = baseDamage * 2;}
+        else{
+            damage = baseDamage;
+        }
+
 
         }
     }
-    public void debuffDwarf(){
-        int debuff=(int) (this.baseHealth/2);
-        if (this.health<=debuff){
-            this.damage=this.baseDamage;
-        }
-    }
-
-}
