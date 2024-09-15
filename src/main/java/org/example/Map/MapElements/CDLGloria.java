@@ -1,5 +1,9 @@
 package org.example.Map.MapElements;
 
+/**
+ * Especialización de la clase map element para modelar el cerro de la gloria
+ * @author Agustín Olivares
+ */
 public class CDLGloria extends MapElement {
 
     public int health;

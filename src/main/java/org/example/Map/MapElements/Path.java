@@ -5,9 +5,13 @@ import org.example.Enemigos.Enemy;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Especialización de la clase map element para modelar el camino donde transitan los enemigos
+ * @author Agustín Olivares
+ */
 public class Path extends MapElement {
 
-    public boolean isStart;
+    public boolean isStart; //true si el inicio del camino
     public List<Enemy> enemies; // Lista de enemigos en esta celda
     public Path next; // Puntero al siguiente nodo del camino
 

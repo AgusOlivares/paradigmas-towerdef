@@ -5,10 +5,15 @@ import org.example.Map.MapElements.Path;
 
 import java.util.Random;
 
+/**
+ * clase que modela el mapa del juego, compuesta por la clase cell
+ * @author Agustín Olivares
+ */
+
 public class Map {
 
-    public static final int ROWS = 10;
-    public static final int COLS = 20;
+    public static final int ROWS = 10; //máximo de filas
+    public static final int COLS = 20; //máximo de columnas
 
     private Cell[][] grid;
     private Cell startCell;
@@ -25,9 +30,17 @@ public class Map {
         createPath();
     }
 
+    /**
+     * Método que imprime el mapa por pantalla
+     */
     public void printMap() {
+        /**
+         * imprime las filas y columnas de celdas con sus encabezados correspondientes para guiar
+         * al usuario en la colocación de las torres, imprime S para indicar la celda donde
+         * inicia el camino enemigo, C para indicar la celda donde se encuentra el cerro de
+         * la gloria y la inicial del tipo enemigo si la celda está siendo ocupada por uno
+         */
         System.out.println();
-
         // Imprimo encabezado de columnas
         System.out.print("  ");
         for (int i = 0; i < grid[0].length; i++) {
@@ -70,49 +83,57 @@ public class Map {
 
         */
 
+    /**
+     * método que genera aleatoriamente el camino por donde transitan los enemigos
+     */
     public void createPath() {
-        Random random = new Random();
-        int startRow = random.nextInt(ROWS);
-
-
-        this.startCell = grid[startRow][0];
-        int currentRow = startRow;
-        int currentCol = 0;
-        Cell currentCell = grid[startRow][currentCol];
-        Path startPath = new Path(currentRow, currentCol);
-        grid[currentRow][currentCol].setContent(startPath);
+        /**
+         * genera un camino aleatorio desde una columna inicial hasta la última columna del grid,
+         * moviéndose hacia la derecha, arriba o abajo.
+         * Al final, coloca el cerro de la gloria como posición final
+         */
+        Random random = new Random(); //crea una instancia random para generar un número aleatorio
+        int startRow = random.nextInt(ROWS); //usa la instancia para obtener una fila aleatoria
+        this.startCell = grid[startRow][0]; //define el inicio del camino
+        int currentRow = startRow; //guarda la posicion fila inicial
+        int currentCol = 0; //guarda la posicion colunma inicial
+        Cell currentCell = grid[startRow][currentCol]; //guarda la celda inicial
+        Path startPath = new Path(currentRow, currentCol); //crea el objeto path de la celda inicial
+        grid[currentRow][currentCol].setContent(startPath); //establece el contenido de la celda inicial
 
         while (currentCol < COLS - 1) {
-            int direction = random.nextInt(3); // 0 = right, 1 = up, 2 = down
+            //empieza a recorrer el mapa en dirección aleatoria
+            int direction = random.nextInt(3); // 0 = derecha, 1 =arriba, 2 = abajo
 
             if (direction == 0 && currentCol < COLS - 1) {
-                // Move right
+                // se mueve a la derecha
                 currentCol++;
             } else if (direction == 1 && currentRow > 0) {
-                // Move up
+                // se mueve hacia arriba
                 currentRow--;
             } else if (direction == 2 && currentRow < ROWS - 1) {
-                // Move down
+                // se mueve hacia abajo
                 currentRow++;
             } else {
-                // If the direction is invalid, continue to the next iteration
+                //si la dirección no es válida, continua a la prócima iteración
                 continue;
             }
 
-            Path newPath = new Path(currentRow, currentCol);
-            grid[currentRow][currentCol].setContent(newPath);
+            Path newPath = new Path(currentRow, currentCol); //crea un path con la posición actual
+            grid[currentRow][currentCol].setContent(newPath); //establece el path como contenido de la celda actual
 
-            // Connect the previous cell with the new cell
+            //Conecta la celda anterior con la nueva celda
             if (currentCell.getContent() instanceof Path) {
                 ((Path) currentCell.getContent()).setNext(newPath);
+                //establece la nueva celda como siguiente en el camino
             }
-            currentCell = grid[currentRow][currentCol]; // Move to the next cell
+            currentCell = grid[currentRow][currentCol]; // se mueve a la siguiente celda
         }
 
-        // The last cell is the Cerro de la Gloria
+        // la última celda es el cerro de la gloria
         CDLGloria cerro = new CDLGloria(currentRow, COLS - 1, 1000);
-        grid[currentRow][COLS - 1].setContent(cerro);
-        this.endCell = grid[currentRow][COLS - 1]; // Update the end cell
+        grid[currentRow][COLS - 1].setContent(cerro); //define el contenido de la celda final
+        this.endCell = grid[currentRow][COLS - 1]; // define la celda final como la actual
     }
 
     public Cell getCell(int row, int col) {

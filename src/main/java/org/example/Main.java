@@ -3,6 +3,11 @@ package org.example;
 import org.example.Enemigos.Enemy;
 import org.example.Enemigos.EnemyDwarf;
 
+/**
+ * clase main que ejecuta el juego
+ * @author Agustín Olivares
+ */
+
 public class Main {
     public static void main(String[] args) {
         Game game = new Game();

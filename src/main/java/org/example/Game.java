@@ -11,12 +11,18 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Clase que se encarga de generar el juego
+ * @autor Agustín Olivares
+ */
+
+
 public class Game {
 
     private ScheduledExecutorService scheduler;
-    public Map map;
-    private List<Enemy> levelEnemies;
-    private Timer timer;
+    public Map map; //mapa donde se juega
+    private List<Enemy> levelEnemies; //lista que contiene los enemigos del nivel
+    private Timer timer; //timer para hacer avanzar los enemigos
 
     public Game() {
         Map gameMap = new Map();
@@ -27,6 +33,9 @@ public class Game {
     }
 
     public void playGame() {
+        /**
+         * método que imprime el mapa y permite a los enemigos interactuar con el entorno
+         */
         scheduler = Executors.newScheduledThreadPool(2);
 
         scheduler.scheduleAtFixedRate(() -> {
@@ -35,12 +44,16 @@ public class Game {
 
         scheduler.scheduleAtFixedRate(() -> {
             for (Enemy enemy : levelEnemies) {
-                enemy.controller(enemy);
+                enemy.controller(enemy); //metodo que los hace caminar o atacar segun sea el caso
             }
         }, 1, 1, TimeUnit.SECONDS);
     }
 
     public void addEnemy(Enemy enemy) {
+        /**
+         * Método que se encarga de añadir los enemigos que aparecen en el nivel actual
+         * @param enemy El enemigo a ser añadido
+         */
         this.levelEnemies.add(enemy);
         Path salida = (Path) map.getStartCell().getContent();
         salida.addEnemy(enemy);
