@@ -56,78 +56,38 @@ public class Game implements gameInterface{
 
             if (!enemyPool.isEmpty()){
                 levelEnemies.add(enemyPool.pop());
+
             }
-
-
-
         }, 0, frequency, TimeUnit.MILLISECONDS );
 
         scheduler.scheduleAtFixedRate(() -> {
             level.getMap().printMap();
+            System.out.println(player.getGold());
         }, 0, 700, TimeUnit.MILLISECONDS);
 
         scheduler.scheduleAtFixedRate(() -> {
             for (Enemy enemy : levelEnemies) {
-                enemy.controller(enemy);
+                if (!enemy.isAlive()) {
+                    player.setGold(player.getGold() + enemy.getGold());
+                    levelEnemies.remove(enemy);
+                    enemy.path.enemies.remove(enemy);
+                } else {
+                    enemy.controller(enemy);
+                }
+                for(Tower tower : player.getTowers()){
+                    tower.updateEnemyOrder();
+                    tower.attack();
+                }
             }
             if (level.getMap().getCdlGloria().isDeath()) {
                 System.out.println("El Cerro ha caido! Fuimos derrotados");
                 scheduler.shutdown();
             }
-        }, 0, 1000, TimeUnit.MILLISECONDS);
+        }, 0, 1100, TimeUnit.MILLISECONDS);
+
 
         return true;
     }
-
-//    public void spawnEnemy() {
-//        int enemyType = new Random().nextInt(4);
-//        switch (enemyType) {
-//            case 0:
-//                addEnemy(new EnemyDwarf(map));
-//                break;
-//            case 1:
-//                addEnemy(new EnemyElf(map));
-//                break;
-//            case 2:
-//                addEnemy(new EnemyHuman(map));
-//                break;
-//            case 3:
-//                addEnemy(new EnemyHobbit(map));
-//                break;
-//        }
-//    }
-
-
-//
-//
-//    public void generateEnemies(int difficulty) {
-//        final int[] totalEnemies = {difficulty * 10}; // Example: 10 enemies per difficulty level
-//        scheduler = Executors.newScheduledThreadPool(3);
-//
-//        scheduler.scheduleAtFixedRate(() -> {
-//            if (totalEnemies[0] > 0) {
-//                int enemyType = totalEnemies[0] % Enemy.enemyTypes; // Cycle through enemy types
-//                switch (enemyType) {
-//                    case 0:
-//                        addEnemy(new EnemyDwarf(map));
-//                        break;
-//                    case 1:
-//                        addEnemy(new EnemyElf(map));
-//                        break;
-//                    case 2:
-//                        addEnemy(new EnemyHuman(map));
-//                        break;
-//                    case 3:
-//                        addEnemy(new EnemyHobbit(map));
-//                        break;
-//                }
-//                totalEnemies[0]--;
-//            } else {
-//                scheduler.shutdown();
-//            }
-//        }, 0, 1000, TimeUnit.MILLISECONDS); // Spawn one enemy every second
-//    }
-
 
     public void addEnemy(Enemy enemy) {
         this.levelEnemies.add(enemy);
@@ -156,9 +116,9 @@ public class Game implements gameInterface{
         this.player = new Player(playerName);
         System.out.println("Bienvenido al campo de batalla " + playerName + "!");
         System.out.println("Necesitamos tu ayuda para defender el Cerro de la Gloria");
-        Thread.sleep(1000);
+        //Thread.sleep(1000);
         System.out.println("Estas preparado? Vamos alla!");
-        Thread.sleep(3000);
+        //Thread.sleep(3000);
         level = new Level(player.getLevel());
         transicionAsteriscos();
         printSpace();
@@ -176,8 +136,9 @@ public class Game implements gameInterface{
                 System.out.println("2 - Ver Mapa");
                 System.out.println("3 - Ver instrucciones");
                 System.out.println("4 - Ver mis datos");
-                System.out.println("5");
-                System.out.println("6 - Salir");
+                System.out.println("5 - Colocar torre");
+                System.out.println("6 - Demoler torre");
+                System.out.println("7 - Salir");
 
                 String option = scanner.nextLine();
 
@@ -192,11 +153,16 @@ public class Game implements gameInterface{
                         ShowInstructions();
                         break;
                     case "4":
-                        System.out.println("Nombre jugador: " + player.getName());
-                        System.out.println("Nivel: " + player.getLevel());
-                        System.out.println("Oro disponible: " + player.getGold());
+                        ShowPlayerDetails();
                         break;
                     case "5":
+                        player.placeTower(level.getMap());
+
+                        break;
+                    case "6":
+                        player.demolishTower(level.getMap());
+                        break;
+                    case "7":
                         System.out.println("Te vas a rendir? como un cobarde?");
                         player.surrender();
                         valid = true;
@@ -204,6 +170,7 @@ public class Game implements gameInterface{
                     default:
                         System.out.println("Por favor ingrese una opcion valida");
                 }
+                printSpace();
             }
 
 
@@ -244,10 +211,10 @@ public class Game implements gameInterface{
         String trans = "";
 
         for (int i = 0; i < 20; i++) {
-            trans += "*";
+            trans += " * ";
             System.out.println(trans);
             System.out.println();
-            Thread.sleep(200);
+            Thread.sleep(100);
         }
     }
 
@@ -266,7 +233,10 @@ public class Game implements gameInterface{
     }
 
     public void ShowPlayerDetails(){
-
+        System.out.println("Nombre jugador: " + player.getName());
+        System.out.println("Nivel: " + player.getLevel());
+        System.out.println("Oro disponible: " + player.getGold());
     };
+
 
 }

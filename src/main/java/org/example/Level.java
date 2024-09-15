@@ -29,15 +29,15 @@ public class Level {
                 break;
             case 2:
                 enemiesInLevel = new String[] {"Human", "Dwarf"};
-                this.enemiesInWave = generarOleadas(3, 2);
+                this.enemiesInWave = generarOleadas(3, 3);
                 break;
             case 3:
                 enemiesInLevel = new String[] {"Human", "Dwarf", "Hobbit"};
-                this.enemiesInWave = generarOleadas(4, 2);
+                this.enemiesInWave = generarOleadas(4, 3);
                 break;
             case 4:
                 enemiesInLevel = new String[] {"Human", "Dwarf", "Hobbit", "Elf"};
-                this.enemiesInWave = generarOleadas(4, 3);
+                this.enemiesInWave = generarOleadas(4, 4);
                 break;
             default:
                 break;

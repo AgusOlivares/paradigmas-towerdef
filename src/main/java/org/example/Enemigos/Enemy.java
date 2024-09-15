@@ -85,7 +85,8 @@ public abstract class Enemy {
     }
 
     public void receiveDamage(int damage) {
-        this.health = this.health - damage;
+        setHealth(getHealth() - damage);
+        //this.health = this.health - damage;
     }
 
     public void attackCerro() {
