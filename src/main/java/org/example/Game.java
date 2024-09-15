@@ -30,7 +30,7 @@ public class Game implements gameInterface{
     public boolean playGame() {
 
         int frequency;
-        switch (player.getLevel()){
+        switch (player.getLevel()) {
             case 1:
                 frequency = 5000;
                 break;
@@ -50,34 +50,36 @@ public class Game implements gameInterface{
         scheduler = Executors.newScheduledThreadPool(3);
 
         scheduler.scheduleAtFixedRate(() -> {
-            if (!level.getEnemiesInWave().isEmpty() && enemyPool.isEmpty()){
+            if (!level.getEnemiesInWave().isEmpty() && enemyPool.isEmpty()) {
                 enemyPool = level.getEnemiesInWave().pop();
             }
 
-            if (!enemyPool.isEmpty()){
+            if (!enemyPool.isEmpty()) {
                 levelEnemies.add(enemyPool.pop());
 
             }
-        }, 0, frequency, TimeUnit.MILLISECONDS );
+        }, 0, frequency, TimeUnit.MILLISECONDS);
 
         scheduler.scheduleAtFixedRate(() -> {
             level.getMap().printMap();
             System.out.println(player.getGold());
-        }, 0, 700, TimeUnit.MILLISECONDS);
+        }, 0, 500, TimeUnit.MILLISECONDS);
 
         scheduler.scheduleAtFixedRate(() -> {
-            for (Enemy enemy : levelEnemies) {
+            Iterator<Enemy> iterator = levelEnemies.iterator();
+            while (iterator.hasNext()) {
+                Enemy enemy = iterator.next();
                 if (!enemy.isAlive()) {
                     player.setGold(player.getGold() + enemy.getGold());
-                    levelEnemies.remove(enemy);
+                    iterator.remove();
                     enemy.path.enemies.remove(enemy);
                 } else {
                     enemy.controller(enemy);
                 }
-                for(Tower tower : player.getTowers()){
-                    tower.updateEnemyOrder();
-                    tower.attack();
-                }
+            }
+            for (Tower tower : player.getTowers()) {
+                tower.updateEnemyOrder();
+                tower.attack();
             }
             if (level.getMap().getCdlGloria().isDeath()) {
                 System.out.println("El Cerro ha caido! Fuimos derrotados");
