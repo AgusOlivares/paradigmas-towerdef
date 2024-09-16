@@ -2,10 +2,17 @@ package org.example;
 
 import org.example.Enemigos.*;
 import org.example.Map.Map;
+import org.example.Player.Player;
 
+import java.awt.*;
+import java.text.DecimalFormat;
 import java.util.Random;
 import java.util.Stack;
 
+/**
+ * La clase Level representa un nivel dentro del juego.
+ * Cada nivel tiene un mapa, enemigos específicos y oleadas de enemigos que se generan segun el nivel del jugador.
+ */
 public class Level {
 
     private int level;
@@ -14,27 +21,33 @@ public class Level {
     private String[] enemiesInLevel;
 
 
+    /**
+     * Constructor de la clase Level.
+     * Inicializa el nivel, genera el mapa y las oleadas de enemigos de acuerdo al nivel actual.
+     *
+     * @param level El número del nivel a jugar.
+     */
     public Level(int level) {
         Map gameMap = new Map(100);
         this.map = gameMap;
         this.level = level;
 
-        switch (level) {
+        switch (level){
             case 1:
-                this.enemiesInLevel = new String[]{"Human"};
-                this.enemiesInWave = generarOleadas(4, 1);
+                this.enemiesInLevel = new String[] {"Human"};
+                this.enemiesInWave = generarOleadas(3, 4);
                 break;
             case 2:
-                enemiesInLevel = new String[]{"Human", "Dwarf"};
-                this.enemiesInWave = generarOleadas(3, 3);
+                enemiesInLevel = new String[] {"Human", "Dwarf"};
+                this.enemiesInWave = generarOleadas(1, 10);
                 break;
             case 3:
-                enemiesInLevel = new String[]{"Human", "Dwarf", "Hobbit"};
-                this.enemiesInWave = generarOleadas(4, 3);
+                enemiesInLevel = new String[] {"Human", "Dwarf", "Hobbit"};
+                this.enemiesInWave = generarOleadas(4, 5);
                 break;
             case 4:
-                enemiesInLevel = new String[]{"Human", "Dwarf", "Hobbit", "Elf"};
-                this.enemiesInWave = generarOleadas(4, 4);
+                enemiesInLevel = new String[] {"Human", "Dwarf", "Hobbit", "Elf"};
+                this.enemiesInWave = generarOleadas(2, 10);
                 break;
             default:
                 break;
@@ -42,7 +55,14 @@ public class Level {
 
     }
 
-    // Método que genera las oleadas de enemigos
+    /**
+     * Genera oleadas de enemigos para el nivel actual.
+     * Cada oleada contiene un número aleatorio de enemigos según el tamaño de la ola.
+     *
+     * @param numOleadas El número de oleadas que se generarán.
+     * @param tamanoOla El número de enemigos por cada oleada.
+     * @return Una pila de pilas de enemigos que representan las oleadas.
+     */
     public Stack<Stack<Enemy>> generarOleadas(int numOleadas, int tamanoOla) {
 
         Stack<Stack<Enemy>> oleadas = new Stack<Stack<Enemy>>();
@@ -57,7 +77,7 @@ public class Level {
 
                 Enemy unit;
 
-                if (enemy == "Human") {
+                if (enemy == "Human"){
                     unit = new EnemyHuman(map);
                 } else if (enemy == "Dwarf") {
                     unit = new EnemyDwarf(map);
@@ -77,28 +97,8 @@ public class Level {
         return oleadas;
     }
 
-    public int WaveReward() {
-        int reward = 0; //Gold
-        for (Stack<Enemy> group : enemiesInWave) {
-            for (Enemy unit : group) {
-                int enemyGold = unit.getGold();
-                reward += enemyGold;
-            }
-        }
-        return reward;
-    }
 
-//    public ArrayList<Enemy> getAllEnemies(){
-//        ArrayList<Enemy> allEnemies = new ArrayList<>();
-//        for (Stack<Enemy> group : enemiesInWave) {
-//            for (Enemy unit : group) {
-//                allEnemies.add(unit);
-//            }
-//        }
-//
-//        return allEnemies;
-//    }
-
+    // Getters & Setters
     public int getLevel() {
         return level;
     }
