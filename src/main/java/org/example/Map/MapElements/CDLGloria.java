@@ -3,10 +3,12 @@ package org.example.Map.MapElements;
 public class CDLGloria extends MapElement {
 
     public int health;
+    private boolean dead;
 
     public CDLGloria(int row, int col, int health) {
         super(row, col);
         this.health = health;
+        this.dead = false;
     }
 
     public int getHealth() {
@@ -19,5 +21,9 @@ public class CDLGloria extends MapElement {
 
     public boolean isDeath(){
         return health <= 0;
+    }
+
+    public void setDead(boolean dead) {
+        this.dead = dead;
     }
 }

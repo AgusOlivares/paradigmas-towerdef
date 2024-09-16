@@ -6,6 +6,6 @@ public interface gameInterface {
 
     public void ShowPlayerDetails();
 
-
+    public void ShowIntroduction();
 
 }

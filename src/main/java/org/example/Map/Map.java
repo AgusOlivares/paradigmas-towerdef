@@ -4,10 +4,7 @@ import org.example.Enemigos.EnemyDwarf;
 import org.example.Enemigos.EnemyElf;
 import org.example.Enemigos.EnemyHobbit;
 import org.example.Enemigos.EnemyHuman;
-import org.example.Map.MapElements.CDLGloria;
-import org.example.Map.MapElements.MapElement;
-import org.example.Map.MapElements.Path;
-import org.example.Map.MapElements.Tower;
+import org.example.Map.MapElements.*;
 
 import java.util.Random;
 
@@ -80,7 +77,11 @@ public class Map {
                 } else if (element instanceof CDLGloria) {
                     System.out.print(" C |"); // Imprimir 'C' si es CDLGloria
                 } else if (element instanceof Tower) {
-                    System.out.print(" T |"); // Imprimir 'T' si es una torre
+                    if (element instanceof SpecialTower){
+                        System.out.print(" F |");
+                    } else {
+                        System.out.print(" T |"); // Imprimir 'T' si es una torre
+                    }
                 } else {
                     System.out.print("   |"); // Celda vacía
                 }
@@ -100,34 +101,56 @@ public class Map {
         Path startPath = new Path(currentRow, currentCol, true);
         grid[currentRow][currentCol].setContent(startPath);
 
-        while (currentCol < COLS - 1) {
-            int direction = random.nextInt(3); // 0 = right, 1 = up, 2 = down
+        int previousDirection = 0; // Para rastrear la última dirección
+        int repeatMove = 0; // Contador para movimientos repetidos después de un giro
 
-            if (direction == 0 && currentCol < COLS - 1) {
-                currentCol++;
-            } else if (direction == 1 && currentRow > 0 && grid[currentRow - 1][currentCol].getContent() == null) {
-                currentRow--;
-            } else if (direction == 2 && currentRow < ROWS - 1 && grid[currentRow + 1][currentCol].getContent() == null) {
-                currentRow++;
+        while (currentCol < COLS - 1) {
+            int direction;
+
+            // Si estamos repitiendo el movimiento, continuamos en la misma dirección
+            if (repeatMove > 0) {
+                direction = previousDirection;
+                repeatMove--;
             } else {
-                continue;
+                direction = random.nextInt(3); // 0 = right, 1 = up, 2 = down
+
+                // Si cambiamos de dirección, debemos forzar dos movimientos consecutivos en la nueva dirección
+                if (direction != previousDirection) {
+                    repeatMove = 1; // Debemos repetir el movimiento una vez más después de girar
+                }
             }
 
+            // Aplicar movimiento en la dirección seleccionada
+            if (direction == 0 && currentCol < COLS - 1) { // Derecha
+                currentCol++;
+            } else if (direction == 1 && currentRow > 0 && grid[currentRow - 1][currentCol].getContent() == null) { // Arriba
+                currentRow--;
+            } else if (direction == 2 && currentRow < ROWS - 1 && grid[currentRow + 1][currentCol].getContent() == null) { // Abajo
+                currentRow++;
+            } else {
+                continue; // Si el movimiento no es válido, probamos otra vez
+            }
+
+            // Crear nuevo Path y actualizar el grid
             Path newPath = new Path(currentRow, currentCol);
             grid[currentRow][currentCol].setContent(newPath);
 
-            // Connect the previous path with the new path
+            // Conectar el camino anterior con el nuevo
             if (currentCell.getContent() instanceof Path) {
                 ((Path) currentCell.getContent()).setNext(newPath);
             }
-            currentCell = grid[currentRow][currentCol]; // Move to the next path
+            currentCell = grid[currentRow][currentCol]; // Moverse a la siguiente celda
+
+            // Actualizar la última dirección
+            previousDirection = direction;
         }
 
-        // The last path is the Cerro de la Gloria
+        // El último camino es el Cerro de la Gloria
         CDLGloria cerro = new CDLGloria(currentRow, COLS - 1, cdlgHealth);
         grid[currentRow][COLS - 1].setContent(cerro);
-        this.endCell = grid[currentRow][COLS - 1]; // Update the end path
+        this.endCell = grid[currentRow][COLS - 1]; // Actualizar el final del camino
     }
+
 
     public Cell getCell(int row, int col) {
         return grid[row][col];

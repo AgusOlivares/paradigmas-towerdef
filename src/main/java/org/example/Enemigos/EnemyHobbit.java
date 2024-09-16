@@ -7,7 +7,7 @@ public class EnemyHobbit extends Enemy {
     boolean randomRewards;
 
     public EnemyHobbit(Map map) {
-        super(map, 100, 66, 10, 3);
+        super(map, 60, 20, 10, 4);
         this.randomRewards = randomRewards();
     }
 

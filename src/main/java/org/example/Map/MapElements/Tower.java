@@ -11,7 +11,7 @@ public class Tower extends MapElement {
     public ArrayList<Path> atkCells;
     public ArrayList<Enemy> enemyQueue;
 
-    public int damage = 500;
+    public int damage = 50;
     public int cost = 100;
     public int range = 2;
 
