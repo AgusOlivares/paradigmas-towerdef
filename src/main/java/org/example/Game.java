@@ -4,7 +4,6 @@ import org.example.Enemigos.Enemy;
 import org.example.Map.MapElements.Path;
 import org.example.Map.MapElements.Tower;
 import org.example.Player.Player;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.*;
@@ -121,7 +120,7 @@ public class Game implements gameInterface {
      * Añade un enemigo al nivel actual y lo asocia con el camino de salida.
      * @param enemy El enemigo a añadir.
      */
-    public void addEnemy(@NotNull Enemy enemy) {
+    public void addEnemy(Enemy enemy) {
         this.levelEnemies.add(enemy);
         Path salida = (Path) level.getMap().getStartCell().getContent();
         salida.addEnemy(enemy);

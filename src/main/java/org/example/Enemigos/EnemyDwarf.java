@@ -2,7 +2,6 @@ package org.example.Enemigos;
 
 
 import org.example.Map.Map;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Especialización de la clase Enemy para el modelado el enemigo de tipo enano
@@ -29,8 +28,7 @@ public class EnemyDwarf extends Enemy {
      * Sobreescritura del metodo Controller, si este enemigo tiene menos de la mitad de la vida, se duplica su daño
      * @param enemy enemigo que realizará las acciones
      */
-    @Override
-    public void Controller(@NotNull Enemy enemy) {
+    public void Controller(Enemy enemy) {
 
         if (!nextIsCerro()) {
             walk(enemy);

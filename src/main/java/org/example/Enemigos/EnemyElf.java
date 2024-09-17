@@ -21,7 +21,6 @@ public class EnemyElf extends Enemy {
         super(map, 200, 66, 25, 3);
     }
 
-    @Override
     /**
      * Método que verifica si la próxima celda es el cerro de la gloria
      * * @return true si la próxima celda o la próxima de la próxima es el cerro de la gloria, false en caso contrario
