@@ -12,6 +12,7 @@ import java.util.Scanner;
 /**
  * Clase del jugador, su responsabilidad es la de colocar y destruir torres, cuando se cambia de nivel se devuelve el oro al igual que si se vendieran las torres
  * Tambien puede rendirse si asi lo desea
+ *
  * @author Agustin Olivares
  * @since 10/09/2024
  */
@@ -72,10 +73,10 @@ public class Player {
 
         while (!validPosition) {
             try {
-                System.out.println("Ingrese la fila (0-9):");
+                System.out.print("Ingrese la fila (0-9): ");
                 int row = Integer.parseInt(scanner.nextLine());
 
-                System.out.println("Ingrese la columna (A-Z):");
+                System.out.print("Ingrese la columna (A-Z): ");
                 char columnChar = scanner.nextLine().toUpperCase().charAt(0);
 
                 // Validar fila y columna
@@ -84,7 +85,7 @@ public class Player {
                     continue;
                 }
 
-                System.out.print("Ingrese el tipo de torre (1: común, 2: especial): ");
+                System.out.print("Ingrese el tipo de torre: 1: Torre Común (100 oro) | 2: Torre Especial (300 oro): ");
                 int type = scanner.nextInt();
                 scanner.nextLine(); // Limpiar el buffer de entrada
 
@@ -140,16 +141,16 @@ public class Player {
     }
 
 
-    public void demolishTower(Map gameMap){
+    public void demolishTower(Map gameMap) {
 
         boolean validPosition = false;
 
         while (!validPosition) {
             try {
-                System.out.println("Ingrese la fila (0-9):");
+                System.out.print("Ingrese la fila (0-9): ");
                 int row = Integer.parseInt(scanner.nextLine());
 
-                System.out.println("Ingrese la columna (A-Z):");
+                System.out.print("Ingrese la columna (A-Z): ");
                 char columnChar = scanner.nextLine().toUpperCase().charAt(0);
 
                 // Validar fila y columna
@@ -165,7 +166,7 @@ public class Player {
                 if (targetCell.getContent() != null && targetCell.getContent() instanceof Tower) {
 
                     // Metodo para demoler la torre
-                    this.gold += (((Tower) targetCell.getContent()).getCost()/2);
+                    this.gold += (((Tower) targetCell.getContent()).getCost() / 2);
                     targetCell.setContent(null);
 
 
@@ -182,7 +183,7 @@ public class Player {
         }
     }
 
-    public void recicleTowers(){
+    public void recicleTowers() {
         for (Tower presentTower : towers) {
             this.gold += presentTower.getCost();
         }

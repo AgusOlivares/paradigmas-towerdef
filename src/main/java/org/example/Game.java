@@ -1,7 +1,6 @@
 package org.example;
 
-import org.example.Enemigos.*;
-import org.example.Map.Map;
+import org.example.Enemigos.Enemy;
 import org.example.Map.MapElements.Path;
 import org.example.Map.MapElements.Tower;
 import org.example.Player.Player;
@@ -20,13 +19,15 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Agustin Olivares
  */
-public class Game implements gameInterface{
 
+
+public class Game implements gameInterface {
+
+    public Player player;
     private ScheduledExecutorService scheduler;
     private ArrayList<Enemy> levelEnemies;
     private Stack<Enemy> enemyPool;
     private Timer timer;
-    public Player player;
     private Level level;
 
 
@@ -67,7 +68,7 @@ public class Game implements gameInterface{
                 frequency = 4000;
         } // Frecuencia con la que spawnean los enemigos segun el nivel del jugador
 
-        scheduler = Executors.newScheduledThreadPool(3); // pool de hilos en los cuales correr las tareas
+        scheduler = Executors.newScheduledThreadPool(3); // pool de hilos en los cuales corren las tareas
 
         scheduler.scheduleAtFixedRate(() -> {
             if (!enemyPool.isEmpty()) {
@@ -78,6 +79,7 @@ public class Game implements gameInterface{
         scheduler.scheduleAtFixedRate(() -> {
             printSpace();
             level.getMap().printMap();
+            System.out.println("Vida actual del Cerro: " + level.getMap().getCdlGloria().getHealth());
         }, 0, 500, TimeUnit.MILLISECONDS);
 
         scheduler.scheduleAtFixedRate(() -> {
@@ -89,7 +91,7 @@ public class Game implements gameInterface{
                     iterator.remove();
                     enemy.path.enemies.remove(enemy);
                 } else {
-                    enemy.controller(enemy);
+                    enemy.Controller(enemy);
                 }
             }
             for (Tower tower : player.getTowers()) {
@@ -98,15 +100,16 @@ public class Game implements gameInterface{
             }
             if (level.getMap().getCdlGloria().isDeath()) {
                 scheduler.shutdownNow();
-                System.out.println("NOOOOO, Ten cuidado " + player.getName() + "!!");
+                System.out.println("¡¡NO, ten cuidado " + player.getName() + "!!");
+                System.out.println("Presione la tecla ENTER para continuar.");
                 level.getMap().getCdlGloria().setDead(true);
             }
 
             if (enemyPool.isEmpty() && levelEnemies.isEmpty()) { // creo que habria que cambiar lo del nivel a enemyPool
                 scheduler.shutdownNow();
-                System.out.println("¡Increible! ¡Has derrotado la oleada!");
-                System.out.println("Se avecinan mas enemigos, tenemos que reforzar las defensas");
-                System.out.println("Presiona cualquier tecla para seguir adelante");
+                System.out.println("¡Increíble! ¡Has derrotado toda la oleada!");
+                System.out.println("Pero... Se avecinan más enemigos, tenemos que reforzar las defensas");
+                System.out.println("Presione cualquier tecla para continuar: ");
             }
 
 
@@ -114,12 +117,13 @@ public class Game implements gameInterface{
 
         return true;
     }
+
     /**
      * Añade un enemigo al nivel actual y lo asocia con el camino de salida.
      *
      * @param enemy El enemigo a añadir.
      */
-    public void addEnemy( @NotNull Enemy enemy) {
+    public void addEnemy(@NotNull Enemy enemy) {
         this.levelEnemies.add(enemy);
         Path salida = (Path) level.getMap().getStartCell().getContent();
         salida.addEnemy(enemy);
@@ -130,7 +134,7 @@ public class Game implements gameInterface{
     /**
      * Inicializa el juego, solicita el nombre del jugador y empieza el nivel correspondiente.
      *
-     * @throws IOException Si ocurre un error de entrada/salida.
+     * @throws IOException          Si ocurre un error de entrada/salida.
      * @throws InterruptedException Si el hilo es interrumpido durante las pausas del juego.
      */
     public void initGame() throws IOException, InterruptedException {
@@ -146,14 +150,14 @@ public class Game implements gameInterface{
 
         Thread.sleep(1000);
         printSpace();
-        System.out.println("Cual es tu nombre?: ");
+        System.out.print("¿Cuál es tu nombre? Escríbelo por favor: ");
         String playerName = scanner.nextLine();
 
         this.player = new Player(playerName);
-        System.out.println("Bienvenido al campo de batalla " + playerName + "!");
-        System.out.println("Necesitamos tu ayuda para defender el Cerro de la Gloria");
+        System.out.println("¡Bienvenido al campo de batalla " + playerName + "!");
+        System.out.println("Necesitamos tu ayuda para defender el legendario Cerro de la Gloria");
         Thread.sleep(1000);
-        System.out.println("Estas preparado? Vamos alla!");
+        System.out.println("¿Estás preparado? ¡Vamos allá!");
         Thread.sleep(3000);
         level = new Level(player.getLevel());
         transicionAsteriscos();
@@ -174,15 +178,16 @@ public class Game implements gameInterface{
                 }
 
 
-                System.out.println("A continaucion elige una de las siguientes opciones:");
+                System.out.println("A continuación elige una de las siguientes opciones: ");
                 System.out.println("1 - Empezar el Juego");
                 System.out.println("2 - Ver Mapa");
-                System.out.println("3 - Ver instrucciones");
-                System.out.println("4 - Ver mis datos");
-                System.out.println("5 - Colocar torre");
-                System.out.println("6 - Demoler torre");
-                System.out.println("7 - Ver introduccion");
+                System.out.println("3 - Ver Instrucciones");
+                System.out.println("4 - Ver mis Datos");
+                System.out.println("5 - Colocar Torre");
+                System.out.println("6 - Demoler Torre");
+                System.out.println("7 - Ver Introducción");
                 System.out.println("8 - Salir");
+                System.out.print("Opción seleccionada: ");
 
                 String option = scanner.nextLine();
 
@@ -196,21 +201,23 @@ public class Game implements gameInterface{
                             continue;
                         }
 
-                        if (player.getLevel() == 5){
+                        if (player.getLevel() == 5) {
                             System.out.println("Espera un momento...");
                             Thread.sleep(1000);
-                            System.out.println("Lo hemos conseguido !!");
+                            System.out.println("ENHORABUENA. Hemos logrado proteger el Cerro de la Gloria, muchas gracias por tus esfuerzos " + player.getName());
                             Thread.sleep(1000);
-                            continue;
+                            System.out.println("¡Hasta la próxima!");
+                            Thread.sleep(1000);
+                            System.exit(0);
 
-                        }else if (level.getEnemiesInWave().isEmpty()){
-                            System.out.println("Ya has derrotado a todas las olas aqui!");
+                        } else if (level.getEnemiesInWave().isEmpty()) {
+                            System.out.println("¡Ya has derrotado a todas las olas aquí!");
                             Thread.sleep(1000);
-                            System.out.println("Levanta todas tus torretas, ya se que te costaron mucho oro pero debemos continuar");
+                            System.out.println("Levantemos todas tus torretas, sé que te costaron mucho oro, pero debemos continuar...");
                             Thread.sleep(1000);
-                            System.out.println("Hay que cubrir los demas flancos! No hay tiempo que perder, vamos!!");
+                            System.out.println("¡Hay que cubrir los demás flancos! ¡No hay tiempo que perder, vamos!");
                             Thread.sleep(2000);
-                            if (player.getLevel() < 5){
+                            if (player.getLevel() < 5) {
                                 transicionAsteriscos();
                                 player.recicleTowers();
                                 player.setLevel(player.getLevel() + 1);
@@ -247,17 +254,27 @@ public class Game implements gameInterface{
                         ShowIntroduction();
                         break;
                     case "8":
-                        System.out.println("Te vas a rendir? Eres un cobarde!");
+                        System.out.println("¿Te vas a rendir? ¡Eres un cobarde!");
                         Thread.sleep(1000);
-                        System.out.println(player.getName() + ": Lo lamento, si, soy un cobarde...");
-                        valid = true;
-                        aviableLevels = true;
+                        boolean flag = false;
+                        while (!flag) {
+                            System.out.print("¿Estás seguro? Escriba 'soy un cobarde' (en minúsculas) para continuar: ");
+                            String answer = scanner.nextLine();
+                            if (answer.equalsIgnoreCase("soy un cobarde")) {
+                                System.out.println("¡Hasta la próxima!");
+                                Thread.sleep(1000);
+                                System.exit(0);
+                            } else {
+                                System.out.println("Además de cobarde no sabe leer, ¿eh? Reintente.");
+                            }
+                        }
                         break;
                     default:
-                        System.out.println("Por favor ingrese una opcion valida");
+                        System.out.print("Por favor, ingrese una opcion válida.");
                 }
 
-                if (!valid) {}
+                if (!valid) {
+                }
             }
 
             boolean statusCDLG = level.getMap().getCdlGloria().isDeath();
@@ -268,29 +285,24 @@ public class Game implements gameInterface{
                 valid = false;
             } else {
                 aviableLevels = true;
-                System.out.println("El Cerro ha caido!" +
-                        " Fuimos derrotados, se ha perdido todo...");
-                System.out.println("No lo hemos podido conseguir, tantas muertes...");
+                System.out.println("El Cerro de la Gloria ha caido!" +
+                        " Fuimos derrotados, hemos perdido todo, tantas muertes...");
                 Thread.sleep(1500);
-                System.out.println("Con que fin...");
+                System.out.println("Con qué fin...");
                 Thread.sleep(1000);
-                System.out.println(player.getName() + "... Lo lamento tanto, no quise que terminaras asi...");
+                System.out.println(player.getName() + ". Lo lamento tanto, no quise que terminaras así...");
                 Thread.sleep(2000);
-                return;
-            }
-
-            if (player.getLevel() > 4 && !level.getMap().getCdlGloria().isDeath()) {
-                System.out.println("Hemos logrado proteger el Cerro de la gloria, muchas gracias por tus esfuerzos " + player.getName());
-                System.out.println("Hasta la proxima!");
-                aviableLevels = true;
+                System.exit(0);
             }
         }
     }
+
+
     /**
      * Imprime el título del juego en la consola.
      */
-    public void printTitle(){
-
+    public void printTitle() {
+        System.out.println();
         System.out.println("===========    ||=======||     \\\\                //      ||======     ||====\\\\              ");
         System.out.println("===========    ||       ||      \\\\              //       ||           ||     ||         ");
         System.out.println("    ||         ||       ||       \\\\    //\\\\    //        ||===        ||=====//        ");
@@ -301,7 +313,8 @@ public class Game implements gameInterface{
         System.out.println("||       ||     ||===      ||====      ||===      ||  \\\\  ||   ||=====||  ||===          ");
         System.out.println("||       ||     ||         ||          ||         ||   \\\\ ||          ||  ||         ");
         System.out.println("||=======//     ||======   ||          ||======   ||    \\\\||    ======||  ||=====        ");
-        System.out.println("----------------------Presione cualquier tecla para contiuar----------------------");
+        System.out.println();
+        System.out.println("--------------------- Presione la tecla ENTER para continuar ----------------------");
 
     }
 
@@ -309,7 +322,7 @@ public class Game implements gameInterface{
     /**
      * Imprime lineas en blanco para generar espacio en la consola
      */
-    public void printSpace(){
+    public void printSpace() {
         for (int i = 0; i < 15; i++) {
             System.out.println();
         }
@@ -337,39 +350,42 @@ public class Game implements gameInterface{
      * Muestra una breve guia sobre los enemigos
      */
     @Override
-    public void ShowInstructions(){
-        System.out.println("En el juego existen varios tipos de enemigos:");
+    public void ShowInstructions() {
+        System.out.println("En el juego existen varios tipos de enemigos: ");
         System.out.println();
-        System.out.println("Humano: Es el enemigo comun lo veras aparecer en el mapa con una 'H'");
+        System.out.println("    HUMANO (H): es el enemigo más común, lo verás en el mapa con una 'H'");
         System.out.println();
-        System.out.println("Enano: Este enemigo es muy resistente, tiene un avance muy lento, pero cuidado! cuando baje del 25% de su daño aumentara, lo veras aparecer en el mapa con una 'D'");
+        System.out.println("    ENANO (D): este enemigo muy resistente pero tiene un avance muy lento. ¡Pero cuidado! Cuando baje del 25% de su daño aumentará, lo verás en el mapa con una 'D'");
         System.out.println();
-        System.out.println("Hobbit: Que es eso que va corriendo por alli? Ese es el Hobbit, el enemigo mas rapido del juego, si te descuidas escapara de todas tus torres, pero cuando lo mates te puede dar una recompesa extra lo veras aparecer en el mapa con una 'B'");
+        System.out.println("    HOBBIT (B): ¿Qué es eso que va corriendo por allí? Es el Hobbit, el enemigo más rapido del juego, si te descuidas escapara de todas tus torres, pero cuando lo mates puede darte una recompesa, extra lo veras aparecer en el mapa con una 'B'");
         System.out.println();
-        System.out.println("Elfo: El poderoso elfo es el enemigo mas orgulloso, puede atacar a distancia asi que tienes que estar alerta, lo veras en el mapa con una 'E'!");
+        System.out.println("    ELFO (E): El poderoso elfo es el enemigo mas orgulloso, puede atacar a distancia asi que tienes que estar alerta, lo veras en el mapa con una 'E'!");
         System.out.println();
-        System.out.println("Nota: Ten cuidado cuando veas un 2 o un ! en los caminos, significa que hay mas de un enemigo en esa casilla!!");
+        System.out.println("Nota: ten cuidado cuando veas un 2 o un ! en los caminos, significa que hay mas de un enemigo en esa casilla.");
     }
+
     /**
      * Muestra los datos del juegador y su oro por consola
      */
     @Override
-    public void ShowPlayerDetails(){
-        System.out.println("Nombre jugador: " + player.getName());
-        System.out.println("Nivel: " + player.getLevel());
+    public void ShowPlayerDetails() {
+        System.out.println("Nombre del Jugador: " + player.getName());
+        System.out.println("Nivel actual: " + player.getLevel());
         System.out.println("Oro disponible: " + player.getGold());
-    };
+    }
+
+    ;
 
     /**
      * Muestra una breve introducción del juego
      */
     @Override
     public void ShowIntroduction() {
-        System.out.println("El cerro de la gloria esta siendo atacado y necesitamos de tu ayuda para defenderlo " + player.getName());
-        System.out.println("Deberas colocar estrategicamente las torres de defensa para protegernos lo mejor posible y conseguir las recompensas que deje el enemigo.");
-        System.out.println("Contamos con una torre especial cuya habilidad es la de realentizar a tus enemigos e incluso puede congelarlos completamente!!");
-        System.out.println("Este cerro es muy escarpado y dificil de recorrer por lo que puede que no te encuentres siempre los mismos caminos");
-        System.out.println("en el mapa veras una 'S' por esa entrada es que vienen los enemigos, los '*' son las sendas que transitaran. los espacios en blanco son los lugares donde puedes colocar tus torretas");
-        System.out.println("Y finalmente, la 'C' que veras en el mapa es nuestro querido Cerro de la Gloria, debes protegerlo a toda costa.");
+        System.out.println("El Cerro de la Gloria está siendo atacado. Necesitamos de tu ayuda para defenderlo, " + player.getName() + '.');
+        System.out.println("Deberás colocar estratégicamente las torres (T) de defensa para protegernos lo mejor posible y conseguir las recompensas que deje el enemigo.");
+        System.out.println("Contamos con una torre especial (F) cuya habilidad es la de realentizar a tus enemigos e incluso puede congelarlos completamente.");
+        // System.out.println("Este cerro es muy escarpado y dificil de recorrer por lo que puede que no te encuentres siempre los mismos caminos");
+        System.out.println("En el mapa verás una (S) en la entrada, los (*) son las sendas que transitarán, y los espacios en blanco son los lugares donde puedes colocar tus torretas.");
+        System.out.println("Y finalmente, la (C) que verás en el mapa es nuestro querido Cerro de la Gloria, debes protegerlo a toda costa.");
     }
 }

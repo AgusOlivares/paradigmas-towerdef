@@ -7,8 +7,10 @@ import org.example.Enemigos.EnemyHuman;
 import org.example.Map.MapElements.*;
 
 import java.util.Random;
+
 /**
  * clase que modela el mapa del juego, compuesta por la clase cell
+ *
  * @author Agustín Olivares
  */
 
@@ -20,8 +22,10 @@ public class Map {
     private Cell[][] grid;
     private Cell startCell;
     private Cell endCell;
+
     /**
      * crea el mapa donde se desarrollará el juego
+     *
      * @param cantidad de vida del cerro de la gloria
      */
     public Map(int cdlgHealth) {
@@ -33,12 +37,13 @@ public class Map {
         }
         createPath(cdlgHealth);
     }
-     /**
+
+    /**
      * Método que imprime el mapa por pantalla
      */
 
     public void printMap() {
-         /**
+        /**
          * Imprime las filas y columnas de celdas con sus encabezados correspondientes para guiar
          * al usuario en la colocación de las torres, imprime S para indicar la celda donde
          * inicia el camino enemigo, C para indicar la celda donde se encuentra el cerro de
@@ -94,7 +99,7 @@ public class Map {
                 } else if (element instanceof CDLGloria) {
                     System.out.print(" C |"); // Imprimir 'C' si es CDLGloria
                 } else if (element instanceof Tower) {
-                    if (element instanceof SpecialTower){
+                    if (element instanceof SpecialTower) {
                         System.out.print(" F |");
                     } else {
                         System.out.print(" T |"); // Imprimir 'T' si es una torre
@@ -105,9 +110,11 @@ public class Map {
             }
             System.out.println();
         }
+        System.out.println();
     }
+
     /**
-     * método que genera aleatoriamente el camino por donde transitan los enemigos
+     * Método que genera aleatoriamente el camino por donde transitan los enemigos
      */
     public void createPath(int cdlgHealth) {
         /**

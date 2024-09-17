@@ -2,14 +2,15 @@ package org.example.Enemigos;
 
 import org.example.Map.Map;
 import org.example.Map.MapElements.CDLGloria;
+import org.example.Map.MapElements.MapElement;
 import org.example.Map.MapElements.Path;
-/**
- * especialización de la clase map element para el modelado de los enemigos
- * @author Luciana Puentes
- */
-public abstract class Enemy {
 
-    public static final int enemyTypes = 4;
+/**
+ * Especialización de la clase MapElement para el modelado de los enemigos
+ *
+ * @author: Luciana Puentes
+ */
+public abstract class Enemy extends MapElement {
 
     public Path path;
     public Map map;
@@ -18,21 +19,25 @@ public abstract class Enemy {
     public int damage;
     public int speed;
     public boolean debuffed = false;
-    /**
-     * Crea un enemigo y lo posiciona en el principio del path
-     * @param mapa donde posicionar el enemigo
-     */
+    private int baseSpeed;
 
+    /**
+     * Crear un enemigo y posicionarlo en el mapa
+     *
+     * @param: Map donde posicionar el enemigo y datos enteros de salud, oro, daño y velocidad
+     */
     public Enemy(Map map, int health, int gold, int damage, int speed) {
+        super(map.getStartCell().getContent().getRow(), map.getStartCell().getContent().getCol());
         this.map = map;
         /**
-         *@see Map
+         *@see: Map
          */
         this.path = (Path) map.getStartCell().getContent();
         this.health = health;
         this.gold = gold;
         this.damage = damage;
         this.speed = speed;
+        this.baseSpeed = speed;
     }
 
     public int getRow() {
@@ -50,43 +55,50 @@ public abstract class Enemy {
     public void setPath(Path path) {
         this.path = path;
     }
+
     /**
-     * método para reducir la velocidad del enemigo en caso de estar ralentizado
-     * @param state true si está ralentizado, false caso contrario
+     * Método para reducir la velocidad del enemigo en el caso de estar ralentizado
+     *
+     * @param state estado de ralentización del enemigo
      */
     public void setDebuff(boolean state) {
         /**
-         * reduce la velocidad del enemigo a la mitad en caso de estar ralentizado y que
-         * su velocidad sea mayor a uno
+         * Reduce la velocidad del enemigo a la mitad cuando está ralentizado y su velocidad sea mayor a uno
          */
         this.debuffed = state;
         if (state) {
             if (this.speed > 1) {
                 this.speed = this.speed / 2;
             } else {
-                this.speed = this.speed * 2;
+                this.speed = 0;
             }
         }
+        if (!state) {
+            this.speed = this.baseSpeed;
+        }
     }
+
     /**
-     * método que verifica si el enemigo está vivo
-     * @return  true si el enemigo está vivo, false en caso contrario
+     * Método que verifica si el enemigo está vivo
+     *
+     * @return: true si el enemigo está vivo, false en caso contrario
      */
     public boolean isAlive() {
         /**
-         * si la vida del emenigo es mayor a cero, retorna true sino, false
+         * Si la vida del emenigo es mayor a cero, retorna true, falso en caso contrario
          */
         return this.health > 0;
     }
+
     /**
-     * método que permite a los enemigos avanzar por el camino
-     * @param enemy enemigo que se quiere mover
+     * Método que permite a los enemigos avanzar por el camino
+     *
+     * @param enemy enemigo que avanza por el camino
      */
     public void walk(Enemy enemy) {
         /**
-         * hace avanzar al enemigo acorde a su velocidad usando la propiedad de linked list
-         * de path, con la precaución de frenar al enemigo en la celda anterior al cerro
-         * de la gloria
+         * Hace avanzar al enemigo acorde a su velocidad. Usa una Linked List como camino con la precaución de frenarlo
+         * en la celda anterior al Cerro de la Gloria
          */
         for (int i = 0; i < this.speed; i++) {
             enemy.path.enemies.remove(enemy); // remuevo al enemigo de la lista de enemigos de la celda
@@ -103,54 +115,60 @@ public abstract class Enemy {
         }
         enemy.setDebuff(false);
     }
+
     /**
-     * método que determina la acción que el enemigo va a realizar
+     * Método que determina la acción que el enemigo va a realizar
+     *
      * @param enemy enemigo que realizará las acciones
      */
-    public void controller(Enemy enemy) {
+    public void Controller(Enemy enemy) {
         /**
-         * si la proxima celda es el cerro, el enemigo inicia su ataque
-         * sino el enemigo debe avanza por el camino
+         * Si la próxima celda es el cerro, el enemigo inicia su ataque
          */
-        if (!nextIsCerro())
+        if (!nextIsCerro()) {
             walk(enemy);
-        else
+        } else {
             attackCerro();
+        }
     }
-     /**
-     * método que verifica si la próxima celda es el cerro de la gloria
+
+    /**
+     * Método que verifica si la próxima celda es el Cerro de la Gloria
+     *
      * @return true si la próxima celda es el cerro de la gloria, false en caso contrario
      */
     public boolean nextIsCerro() {
         /**
-         * si la próxima celda de la celda actual del enemigo es una instancia del
-         * cerro de la gloria, retorna true
+         * Retorna true si la próxima celda es el Cerro de la Gloria, false en caso contrario
          */
         Path nextPath = this.path.next;
         /**
-        *@see Path
-        */
+         *@see Path
+         */
         int nextPathRow = nextPath.getRow();
         int nextPathCol = nextPath.getCol();
         return map.getGrid()[nextPathRow][nextPathCol] == map.getEndCell();
     }
-     /**
-     * método para reducir la vida del enemigo
+
+    /**
+     * Método que permite reducir la vida del enemigo
+     *
      * @param damage daño que recibe el enemigo
      */
     public void receiveDamage(int damage) {
         /**
-         * resta los puntos de daño recibidos a la vida actual del enemigo
+         * Resta los puntos de daño recibidos a la vida actual del enemigo
          */
         setHealth(getHealth() - damage);
         //this.health = this.health - damage;
     }
+
     /**
-     * método para atacar al cerro de la gloria
+     * Método para atacar al Cerro de la Gloria
      */
     public void attackCerro() {
         /**
-         * resta los puntos de daño del enemigo a la vida del cerro de la gloria
+         * Resta los puntos de daño del enemigo a la vida del Cerro de la Gloria
          */
         CDLGloria cerro = (CDLGloria) map.getEndCell().getContent();
         /**
@@ -208,5 +226,5 @@ public abstract class Enemy {
     public void setDebuffed(boolean debuffed) {
         this.debuffed = debuffed;
     }
-        //
+    //
 }

@@ -2,10 +2,7 @@ package org.example;
 
 import org.example.Enemigos.*;
 import org.example.Map.Map;
-import org.example.Player.Player;
 
-import java.awt.*;
-import java.text.DecimalFormat;
 import java.util.Random;
 import java.util.Stack;
 
@@ -28,25 +25,25 @@ public class Level {
      * @param level El número del nivel a jugar.
      */
     public Level(int level) {
-        Map gameMap = new Map(100);
+        Map gameMap = new Map(500);
         this.map = gameMap;
         this.level = level;
 
-        switch (level){
+        switch (level) {
             case 1:
-                this.enemiesInLevel = new String[] {"Human"};
+                this.enemiesInLevel = new String[]{"Human"};
                 this.enemiesInWave = generarOleadas(3, 4);
                 break;
             case 2:
-                enemiesInLevel = new String[] {"Human", "Dwarf"};
+                enemiesInLevel = new String[]{"Human", "Dwarf"};
                 this.enemiesInWave = generarOleadas(1, 10);
                 break;
             case 3:
-                enemiesInLevel = new String[] {"Human", "Dwarf", "Hobbit"};
+                enemiesInLevel = new String[]{"Human", "Dwarf", "Hobbit"};
                 this.enemiesInWave = generarOleadas(4, 5);
                 break;
             case 4:
-                enemiesInLevel = new String[] {"Human", "Dwarf", "Hobbit", "Elf"};
+                enemiesInLevel = new String[]{"Human", "Dwarf", "Hobbit", "Elf"};
                 this.enemiesInWave = generarOleadas(2, 10);
                 break;
             default:
@@ -60,7 +57,7 @@ public class Level {
      * Cada oleada contiene un número aleatorio de enemigos según el tamaño de la ola.
      *
      * @param numOleadas El número de oleadas que se generarán.
-     * @param tamanoOla El número de enemigos por cada oleada.
+     * @param tamanoOla  El número de enemigos por cada oleada.
      * @return Una pila de pilas de enemigos que representan las oleadas.
      */
     public Stack<Stack<Enemy>> generarOleadas(int numOleadas, int tamanoOla) {
@@ -77,7 +74,7 @@ public class Level {
 
                 Enemy unit;
 
-                if (enemy == "Human"){
+                if (enemy == "Human") {
                     unit = new EnemyHuman(map);
                 } else if (enemy == "Dwarf") {
                     unit = new EnemyDwarf(map);

@@ -5,8 +5,10 @@ import org.example.Map.Cell;
 import org.example.Map.Map;
 
 import java.util.ArrayList;
+
 /**
- * Especialización de la clase map element para modelar las torres
+ * Especialización de la clase MapElement para modelar la torre
+ *
  * @author Adriano Fabris
  */
 public class Tower extends MapElement {
@@ -14,9 +16,9 @@ public class Tower extends MapElement {
     public ArrayList<Path> atkCells;
     public ArrayList<Enemy> enemyQueue;
 
-    public int damage = 50;
-    public int cost = 100;
-    public int range = 2;
+    public static int damage = 50;
+    public static int cost = 100;
+    public static int range = 2;
 
     public Tower(int row, int col, Map map) {
         super(row, col);
@@ -27,6 +29,7 @@ public class Tower extends MapElement {
         this.atkCells = this.findAtkCells();
         this.enemyQueue = new ArrayList<>();
     }
+
     /**
      * Método para infligir daño a los enemigos
      */
@@ -49,6 +52,7 @@ public class Tower extends MapElement {
     }
 
     // Actualiza la cola ordenada de enemigos
+
     /**
      * Método para actualizar la cola de ataque de la torre
      */
@@ -71,8 +75,10 @@ public class Tower extends MapElement {
     }
 
     // Encuentra las celdas (que pertenenecen al camino enemigo) a las que la torre puede atacar
+
     /**
      * Método que encuentra las celdas del camino enemigo a las que la torre puede atacar
+     *
      * @return atkCells una lista que contiene las celdas que la torre puede atacar
      */
     public ArrayList<Path> findAtkCells() {
@@ -104,8 +110,10 @@ public class Tower extends MapElement {
     }
 
     // Checkea rápidamente si un enemigo está en el rango de la torre
+
     /**
      * Método que verifica si un enemigo se encuentra dentro del rango de la torre
+     *
      * @param enemy el emenigo a verificar
      * @return true si el enemigo está dentro del rango de la torre, false en caso contrario
      */
