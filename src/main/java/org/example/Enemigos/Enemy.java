@@ -12,13 +12,13 @@ import org.example.Map.MapElements.Path;
  */
 public abstract class Enemy extends MapElement {
 
-    public Path path;
-    public Map map;
-    public int health;
-    public int gold;
-    public int damage;
-    public int speed;
-    public boolean debuffed = false;
+    private Path path;
+    private Map map;
+    private int health;
+    private int gold;
+    private int damage;
+    private int speed;
+    private boolean debuffed = false;
     private int baseSpeed;
 
     /**
@@ -93,21 +93,18 @@ public abstract class Enemy extends MapElement {
     /**
      * Método que permite a los enemigos avanzar por el camino
      *
+     * Hace avanzar al enemigo acorde a su velocidad. Usa una Linked List como camino con la precaución de frenarlo
+     * en la celda anterior al Cerro de la Gloria
+     *
      * @param enemy enemigo que avanza por el camino
+     * @see Path
      */
     public void walk(Enemy enemy) {
-        /**
-         * Hace avanzar al enemigo acorde a su velocidad. Usa una Linked List como camino con la precaución de frenarlo
-         * en la celda anterior al Cerro de la Gloria
-         */
         for (int i = 0; i < this.speed; i++) {
-            enemy.path.enemies.remove(enemy); // remuevo al enemigo de la lista de enemigos de la celda
-            Path nuevaCelda = enemy.path.next; // Puntero a la proxima celda del camino
+            enemy.path.getEnemies().remove(enemy); // remuevo al enemigo de la lista de enemigos de la celda
+            Path nuevaCelda = enemy.path.getNext(); // Puntero a la proxima celda del camino
             enemy.path = nuevaCelda;
             enemy.setPath(nuevaCelda);
-            /**
-             * @see Path
-             */
             enemy.path.addEnemy(enemy);
             if (nextIsCerro()) {
                 break;
@@ -117,14 +114,11 @@ public abstract class Enemy extends MapElement {
     }
 
     /**
-     * Método que determina la acción que el enemigo va a realizar
+     * Método que determina la acción que el enemigo va a realizar, si la próxima celda es el cerro, el enemigo inicia su ataque
      *
      * @param enemy enemigo que realizará las acciones
      */
     public void Controller(Enemy enemy) {
-        /**
-         * Si la próxima celda es el cerro, el enemigo inicia su ataque
-         */
         if (!nextIsCerro()) {
             walk(enemy);
         } else {
@@ -134,47 +128,32 @@ public abstract class Enemy extends MapElement {
 
     /**
      * Método que verifica si la próxima celda es el Cerro de la Gloria
-     *
      * @return true si la próxima celda es el cerro de la gloria, false en caso contrario
+     * @see Path
      */
     public boolean nextIsCerro() {
-        /**
-         * Retorna true si la próxima celda es el Cerro de la Gloria, false en caso contrario
-         */
-        Path nextPath = this.path.next;
-        /**
-         *@see Path
-         */
+        Path nextPath = this.path.getNext();
         int nextPathRow = nextPath.getRow();
         int nextPathCol = nextPath.getCol();
         return map.getGrid()[nextPathRow][nextPathCol] == map.getEndCell();
     }
 
     /**
-     * Método que permite reducir la vida del enemigo
-     *
+     * Método que permite reducir la vida del enemigo, resta los puntos de daño recibidos a la vida actual del enemigo
      * @param damage daño que recibe el enemigo
      */
     public void receiveDamage(int damage) {
-        /**
-         * Resta los puntos de daño recibidos a la vida actual del enemigo
-         */
         setHealth(getHealth() - damage);
         //this.health = this.health - damage;
     }
 
     /**
-     * Método para atacar al Cerro de la Gloria
+     * Método para atacar al Cerro de la Gloria, resta los puntos de daño del enemigo a la vida del Cerro de la Gloria
+     * @see Map
+     * @see CDLGloria
      */
     public void attackCerro() {
-        /**
-         * Resta los puntos de daño del enemigo a la vida del Cerro de la Gloria
-         */
         CDLGloria cerro = (CDLGloria) map.getEndCell().getContent();
-        /**
-         * @see Map
-         * @see CDLGloria
-         */
         cerro.setHealth(cerro.getHealth() - this.damage);
     }
 

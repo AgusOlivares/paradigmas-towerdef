@@ -20,7 +20,6 @@ import java.util.concurrent.TimeUnit;
  * @author Agustin Olivares
  */
 
-
 public class Game implements gameInterface {
 
     public Player player;
@@ -89,7 +88,7 @@ public class Game implements gameInterface {
                 if (!enemy.isAlive()) {
                     player.setGold(player.getGold() + enemy.getGold());
                     iterator.remove();
-                    enemy.path.enemies.remove(enemy);
+                    enemy.getPath().getEnemies().remove(enemy);
                 } else {
                     enemy.Controller(enemy);
                 }
@@ -105,7 +104,7 @@ public class Game implements gameInterface {
                 level.getMap().getCdlGloria().setDead(true);
             }
 
-            if (enemyPool.isEmpty() && levelEnemies.isEmpty()) { // creo que habria que cambiar lo del nivel a enemyPool
+            if (enemyPool.isEmpty() && levelEnemies.isEmpty()) {
                 scheduler.shutdownNow();
                 System.out.println("¡Increíble! ¡Has derrotado toda la oleada!");
                 System.out.println("Pero... Se avecinan más enemigos, tenemos que reforzar las defensas");
@@ -120,7 +119,6 @@ public class Game implements gameInterface {
 
     /**
      * Añade un enemigo al nivel actual y lo asocia con el camino de salida.
-     *
      * @param enemy El enemigo a añadir.
      */
     public void addEnemy(@NotNull Enemy enemy) {

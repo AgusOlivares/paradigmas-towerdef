@@ -9,8 +9,6 @@ import org.example.Map.Map;
  */
 public class EnemyHobbit extends Enemy {
 
-    boolean randomRewards;
-
     /**
      * Crea un enemigo de tipo hobbit
      *
@@ -18,22 +16,8 @@ public class EnemyHobbit extends Enemy {
      */
     public EnemyHobbit(Map map) {
         super(map, 100, 10 + (int) (Math.random() * 10), 10, 3);
-        /**
-         * @see Enemy
-         */
-        this.randomRewards = randomBoolean();
+
     }
 
-    /**
-     * Método que aleatoriamente da recompensas adicionales por matar al enemigo hobbit
-     *
-     * @return true si se dan recompensas adicionales, false en caso contrario
-     */
-    public boolean randomBoolean() {
-        /**
-         * Si un número aleatorio es menor a 0.5 entonces devuelve true
-         */
-        return Math.random() < 0.5;
-    }
 
 }

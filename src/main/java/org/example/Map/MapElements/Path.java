@@ -13,9 +13,9 @@ import java.util.List;
 
 public class Path extends MapElement {
 
-    public boolean isStart;
-    public List<Enemy> enemies; // Lista de enemigos en esta celda
-    public Path next; // Puntero al siguiente nodo del camino
+    private boolean isStart;
+    private List<Enemy> enemies; // Lista de enemigos en esta celda
+    private Path next; // Puntero al siguiente nodo del camino
 
     /**
      * Crea una instancia path a partir de una posición de fila y otra de columna

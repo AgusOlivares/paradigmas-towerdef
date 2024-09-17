@@ -8,8 +8,8 @@ package org.example.Map.MapElements;
 
 
 public abstract class MapElement {
-    public int row;
-    public int col;
+    private int row;
+    private int col;
 
     /**
      * Crea un map element a partir de una posición de fila y otra de columna

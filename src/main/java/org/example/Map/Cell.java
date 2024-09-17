@@ -2,7 +2,7 @@ package org.example.Map;
 
 import org.example.Map.MapElements.MapElement;
 
-/*
+/**
  * La clase Cell va a componer el mapa del nivel y es la encargada de contener ya sean casillas de torre, casillas de camino enemigo o pasto.
  *
  * @author Olivares Agustin
@@ -11,7 +11,7 @@ import org.example.Map.MapElements.MapElement;
  */
 
 public class Cell {
-    public MapElement content;
+    private MapElement content;
 
     public Cell(MapElement content) {
         this.content = content;

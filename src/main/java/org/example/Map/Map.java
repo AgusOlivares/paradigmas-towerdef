@@ -16,8 +16,8 @@ import java.util.Random;
 
 public class Map {
 
-    public static final int ROWS = 10;
-    public static final int COLS = 26;
+    private static final int ROWS = 10;
+    private static final int COLS = 26;
 
     private Cell[][] grid;
     private Cell startCell;
@@ -40,16 +40,16 @@ public class Map {
 
     /**
      * Método que imprime el mapa por pantalla
+     *
+     * Imprime las filas y columnas de celdas con sus encabezados correspondientes para guiar
+     * al usuario en la colocación de las torres, imprime S para indicar la celda donde
+     * inicia el camino enemigo, C para indicar la celda donde se encuentra el cerro de
+     * la gloria, * para las celdas que forman parte del camino enemigo
+     * y la inicial del tipo enemigo si la celda está siendo ocupada por uno
      */
 
     public void printMap() {
-        /**
-         * Imprime las filas y columnas de celdas con sus encabezados correspondientes para guiar
-         * al usuario en la colocación de las torres, imprime S para indicar la celda donde
-         * inicia el camino enemigo, C para indicar la celda donde se encuentra el cerro de
-         * la gloria, * para las celdas que forman parte del camino enemigo
-         * y la inicial del tipo enemigo si la celda está siendo ocupada por uno
-         */
+
         System.out.println();
 
         // Imprimo encabezado de columnas
@@ -115,12 +115,16 @@ public class Map {
 
     /**
      * Método que genera aleatoriamente el camino por donde transitan los enemigos
+     *
+     * Genera un camino aleatorio desde una columna inicial hasta la última columna del grid,
+     * moviéndose hacia la derecha, arriba o abajo.
+     * Coloca el cerro de la gloria como posición final
      */
     public void createPath(int cdlgHealth) {
         /**
-         * Genera un camino aleatorio desde una columna inicial hasta la última columna del grid,
-         * moviéndose hacia la derecha, arriba o abajo.
-         * Al final, coloca el cerro de la gloria como posición final
+         *
+         *
+         *
          */
         Random random = new Random();
         int startRow = random.nextInt(ROWS);
@@ -201,5 +205,12 @@ public class Map {
 
     public CDLGloria getCdlGloria() {
         return (CDLGloria) endCell.getContent();
+    }
+
+    public static int getROWS(){
+        return ROWS;
+    }
+    public static int getCOLS(){
+        return COLS;
     }
 }

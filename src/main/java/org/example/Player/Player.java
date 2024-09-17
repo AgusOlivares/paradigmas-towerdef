@@ -14,7 +14,6 @@ import java.util.Scanner;
  * Tambien puede rendirse si asi lo desea
  *
  * @author Agustin Olivares
- * @since 10/09/2024
  */
 
 public class Player {
@@ -80,7 +79,7 @@ public class Player {
                 char columnChar = scanner.nextLine().toUpperCase().charAt(0);
 
                 // Validar fila y columna
-                if (row < 0 || row >= Map.ROWS || columnChar < 'A' || columnChar > 'Z') {
+                if (row < 0 || row >= Map.getROWS() || columnChar < 'A' || columnChar > 'Z') {
                     System.out.println("Posición inválida. Las filas deben ser entre 0-9 y las columnas entre A-T.");
                     continue;
                 }
@@ -154,7 +153,7 @@ public class Player {
                 char columnChar = scanner.nextLine().toUpperCase().charAt(0);
 
                 // Validar fila y columna
-                if (row < 0 || row >= Map.ROWS || columnChar < 'A' || columnChar > 'Z') {
+                if (row < 0 || row >= Map.getROWS() || columnChar < 'A' || columnChar > 'Z') {
                     System.out.println("Posición inválida. Las filas deben ser entre 0-9 y las columnas entre A-Z.");
                     continue;
                 }
@@ -167,6 +166,7 @@ public class Player {
 
                     // Metodo para demoler la torre
                     this.gold += (((Tower) targetCell.getContent()).getCost() / 2);
+                    this.towers.remove(targetCell.getContent());
                     targetCell.setContent(null);
 
 
@@ -174,7 +174,7 @@ public class Player {
 
                     validPosition = true;
                 } else {
-                    System.out.println("La celda seleccionada no está disponible para colocar una torre.");
+                    System.out.println("La celda seleccionada no está disponible para demoler una torre.");
                 }
 
             } catch (Exception e) {

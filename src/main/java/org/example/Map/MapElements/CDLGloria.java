@@ -8,7 +8,7 @@ package org.example.Map.MapElements;
 
 public class CDLGloria extends MapElement {
 
-    public int health;
+    private int health;
     private boolean dead;
 
     /**
@@ -17,12 +17,13 @@ public class CDLGloria extends MapElement {
      * @param row    posición de fila
      * @param col    posición de columna
      * @param health cantidad de puntos de vida
+     *
+     * @see MapElement
+     *
      */
     public CDLGloria(int row, int col, int health) {
         super(row, col);
-        /**
-         * @see MapELement
-         */
+
         this.health = health;
         this.dead = false;
     }
@@ -42,9 +43,6 @@ public class CDLGloria extends MapElement {
      */
 
     public boolean isDeath() {
-        /**
-         * Si la cantidad de puntos de vida es menor o igual a cero retorna true
-         */
         return health <= 0;
     }
 

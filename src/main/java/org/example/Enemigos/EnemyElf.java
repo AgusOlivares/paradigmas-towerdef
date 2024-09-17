@@ -31,18 +31,17 @@ public class EnemyElf extends Enemy {
          * si la próxima celda de la celda actual o la próxima de ella es una instancia del
          * cerro de la gloria, retorna true
          */
-        Path nextPath = this.path.next;
-        Path nextnextPath = this.path.next.next;
+        Path nextPath = this.getPath().getNext();
+        Path nextnextPath = this.getPath().getNext().getNext();
         int nextPathRow = nextPath.getRow();
         int nextPathCol = nextPath.getCol();
         int nextnextPathRow = nextnextPath.getRow();
         int nextnextPathCol = nextnextPath.getCol();
-        return map.getGrid()[nextPathRow][nextPathCol] == map.getEndCell() || map.getGrid()[nextnextPathRow][nextnextPathCol] == map.getEndCell();
+        return getMap().getGrid()[nextPathRow][nextPathCol] == getMap().getEndCell() || getMap().getGrid()[nextnextPathRow][nextnextPathCol] == getMap().getEndCell();
     }
 
     /**
-     * Método que determina la acción que el enemigo va a realizar
-     *
+     * Sobreescritura del metodo Controller
      * @param enemy enemigo que realizará las acciones
      */
     public void Controller(Enemy enemy) {

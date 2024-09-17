@@ -10,8 +10,8 @@ import org.jetbrains.annotations.NotNull;
  * @author Luciana Puentes
  */
 public class EnemyDwarf extends Enemy {
-    public int baseHealth;
-    public int baseDamage;
+    private int baseHealth;
+    private int baseDamage;
 
     /**
      * Crea un enemigo de tipo enano
@@ -25,21 +25,18 @@ public class EnemyDwarf extends Enemy {
         super(map, 300, 50, 30, 2);
     }
 
+    /**
+     * Sobreescritura del metodo Controller, si este enemigo tiene menos de la mitad de la vida, se duplica su daño
+     * @param enemy enemigo que realizará las acciones
+     */
     @Override
     public void Controller(@NotNull Enemy enemy) {
-        /**
-         * Si la próxima celda es el Cerro de la Gloria, lo ataca.
-         * Aumenta el daño que inflinge el enano si se encuentra a menos de la mitad de la vida
-         */
 
         if (!nextIsCerro()) {
             walk(enemy);
         } else {
-            /**
-             * Si la vida actual del enano es mayor a la mitad de su vida base,establece su daño como el doble del daño base
-             */
-            if (health < (int) baseHealth / 2) {
-                this.damage = baseDamage * 2;
+            if (getHealth() < (int) baseHealth / 2) {
+                this.setDamage((int) baseDamage * 2);
             }
             attackCerro();
         }

@@ -10,7 +10,6 @@ import org.example.Map.Map;
 public class EnemyHuman extends Enemy {
     /**
      * Crea un enemigo de tipo humano
-     *
      * @param map mapa donde se crea el enemigo de tipo humano
      */
     public EnemyHuman(Map map) {
